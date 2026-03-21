@@ -1,4 +1,4 @@
 User-agent:*
 Disallow:
 
-Sitemap: https://你的域名.com/Blog_Vuepress/sitemap.xml
+Sitemap: https://pkc-www.github.io/my_study_blog/Blog_Vuepress/sitemap.xml
