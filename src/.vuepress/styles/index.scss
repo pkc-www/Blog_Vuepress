@@ -1,0 +1,94 @@
+/* ========================================= 
+   1. 全局图片及公式居中样式
+      ========================================= */ 
+    .theme-hope-content { 
+
+    p > img,
+    figure img { 
+    
+    display: block; 
+    margin: 16px auto !important; 
+  } 
+  figcaption { 
+    text-align: center; 
+    font-size: 0.9em; 
+    opacity: 0.8; 
+  } 
+}
+
+/* ========================================= 
+   2. 深色模式 - 智能反色与 Hover 恢复
+      ========================================= */ 
+      /* 这里的逻辑：[深色模式下] + [非SVG] + [非头像] 的图片 */
+      html.dark img:not([src$=".svg"]):not([src*="ava"]):not(.avatar),
+      [data-theme="dark"] img:not([src$=".svg"]):not([src*="ava"]):not(.avatar) {
+
+    filter: invert(0.9) hue-rotate(180deg) !important;
+    mix-blend-mode: lighten !important;
+    transition: filter 0.3s ease, transform 0.3s ease !important;
+      }
+
+/* 关键修复：这里的 hover 必须包含同样的 :not 条件，确保优先级绝对胜出 */
+html.dark img:not([src$=".svg"]):not([src*="ava"]):not(.avatar):hover,
+[data-theme="dark"] img:not([src$=".svg"]):not([src*="ava"]):not(.avatar):hover {
+  filter: none !important;           /* 强制清除滤镜 */
+  mix-blend-mode: normal !important; /* 强制恢复正常混合模式 */
+  transform: scale(1.02) !important; /* 轻微放大效果 */
+  cursor: zoom-in;                   /* 提示可以查看原图 */
+}
+
+/* ========================================= 
+   3. 头像特权保护区 (绝对禁止任何滤镜)
+      ========================================= */ 
+      .vp-blog-infos-avatar img, 
+      .vp-blog-hero-image img, 
+      img[src*="ava"],
+      img.avatar {
+
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    transition: transform 0.3s ease !important;
+      }
+
+/* 头像也可以加个简单的 hover 缩放，不影响颜色 */
+.vp-blog-infos-avatar img:hover,
+.vp-blog-hero-image img:hover {
+  transform: rotate(5deg) scale(1.1);
+}
+
+/* ========================================= 
+   4. 浅色模式 - SVG 反色处理
+      ========================================= */ 
+      html:not(.dark) img[src$=".svg"],
+      [data-theme="light"] img[src$=".svg"] {
+
+    filter: invert(1) hue-rotate(180deg) !important;
+      }
+      
+/* ========================================= 
+   5. 首页 Hero 区域文字颜色精准适配
+   ========================================= */ 
+
+/* 模式 A：白天模式 (强制黑字) */
+[data-theme="light"], 
+html:not([data-theme="dark"]) {
+  .vp-blog-hero {
+    .vp-blog-hero-title,
+    .vp-blog-hero-description {
+      color: #1a1a1a !important; /* 深黑色 */
+      text-shadow: none !important; 
+    }
+  }
+}
+
+/* 模式 B：深色模式 (强制白字，防止被上面误伤) */
+[data-theme="dark"] {
+  .vp-blog-hero {
+    .vp-blog-hero-title,
+    .vp-blog-hero-description {
+      color: #ffffff !important; /* 纯白色 */
+      /* 给深色模式加回一点阴影，让字在背景图上更立体 */
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important; 
+    }
+  }
+}
