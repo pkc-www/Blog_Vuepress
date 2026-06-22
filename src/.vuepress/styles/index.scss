@@ -23,9 +23,12 @@
       html.dark img:not([src$=".svg"]):not([src*="ava"]):not(.avatar),
       [data-theme="dark"] img:not([src$=".svg"]):not([src*="ava"]):not(.avatar) {
 
-    filter: invert(0.9) hue-rotate(180deg) !important;
-    mix-blend-mode: lighten !important;
-    transition: filter 0.3s ease, transform 0.3s ease !important;
+    filter: invert(1) hue-rotate(180deg) !important; /* 使用 invert(1) 彻底消除灰底和褪色边框 */
+    mix-blend-mode: screen !important; /* screen 混合模式更干净，消除底色更平滑 */
+    box-shadow: none !important; /* 消除暗色阴影被反相后产生的白色褪色感光晕 */
+    background-color: transparent !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
       }
 
 /* 关键修复：这里的 hover 必须包含同样的 :not 条件，确保优先级绝对胜出 */
@@ -33,7 +36,10 @@ html.dark img:not([src$=".svg"]):not([src*="ava"]):not(.avatar):hover,
 [data-theme="dark"] img:not([src$=".svg"]):not([src*="ava"]):not(.avatar):hover {
   filter: none !important;           /* 强制清除滤镜 */
   mix-blend-mode: normal !important; /* 强制恢复正常混合模式 */
-  transform: scale(1.02) !important; /* 轻微放大效果 */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6) !important; /* 增加精致深色阴影突出原图质感 */
+  transform: scale(1.03) !important; /* 略微增加放大比例 */
+  background-color: #fff !important; /* 添加白色底色，确保透明底公式图在 hover 时清晰可见 */
+  border-radius: 6px !important;
   cursor: zoom-in;                   /* 提示可以查看原图 */
 }
 
