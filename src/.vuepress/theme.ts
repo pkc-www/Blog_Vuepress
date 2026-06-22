@@ -56,5 +56,6 @@ export default hopeTheme({
       type: "katex",
     },
     alert: true,
+    imgSize: true,
   },
 });
