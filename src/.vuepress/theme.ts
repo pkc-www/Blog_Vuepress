@@ -33,19 +33,20 @@ export default hopeTheme({
 
   plugins: {
     blog: true,
-    
+
+    photoSwipe: {
+      selector: "[vp-content] img:not([no-view])",
+    },
+
     slimsearch: {
-      // 是否索引正文内容（全文搜索核心）
       indexContent: true,
-      // 开启搜索建议
       suggestion: true,
-      // 这里的热键配置
       hotKeys: [
         { key: "k", ctrl: true },
         { key: "/", ctrl: false },
       ],
     },
-    
+
     icon: {
       assets: "fontawesome-with-brands",
     },
@@ -57,5 +58,11 @@ export default hopeTheme({
     },
     alert: true,
     imgSize: true,
+    mark: true,
+    sup: true,
+    sub: true,
+    footnote: true,
+    tasklist: true,
+    mermaid: true,
   },
 });
