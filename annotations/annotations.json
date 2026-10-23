@@ -1,20 +1,6 @@
 {
   "version": 1,
-  "annotations": [
-    {
-      "quote": "空间某点磁感应强度 B 的大小定义为在该点的单位电流元 Idl 感受到的磁场力：",
-      "prefix": "恒定磁场的源是恒定电流（电流密度 J），它是矢量源。",
-      "suffix": "dF=Idl×B其方向与所受最大力的方向垂直，遵循右手螺旋关系。",
-      "pos": 26,
-      "page": "/post/电磁场/第3章-恒定磁场.html",
-      "pageTitle": "第3章 恒定磁场",
-      "color": "yellow",
-      "note": "",
-      "id": "mvko2s0pmssu",
-      "created": 1792741626457,
-      "updated": 1792741626457
-    }
-  ],
+  "annotations": [],
   "deleted": [
     {
       "id": "mvknxi7v35k6",
@@ -115,6 +101,10 @@
     {
       "id": "mvkgfic0nmr8",
       "at": 1792739589430
+    },
+    {
+      "id": "mvko2s0pmssu",
+      "at": 1792741643553
     }
   ]
 }
