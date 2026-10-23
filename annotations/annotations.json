@@ -13,6 +13,19 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
+    },
+    {
+      "quote": "公式： 原积分 I=2πi∑Imzk​>0​Res[f(z),zk​]。",
+      "prefix": "实轴区间 [−R,R]）。当 R→∞ 时，大半圆弧积分趋于 0。",
+      "suffix": "注意： 只需计算位于上半平面的极点留数。类型三：傅里叶型积分 ∫",
+      "pos": 5940,
+      "page": "/post/复变函数/复变函数.html",
+      "pageTitle": "复变函数",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkhzulntxfz",
+      "created": 1792731412139,
+      "updated": 1792731412139
     }
   ],
   "deleted": [
