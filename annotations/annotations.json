@@ -13,19 +13,6 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
-    },
-    {
-      "quote": "I(s)=s(s+2)(s+5)2.8s2+17.6s+16​=s1.6​+s+24/3​−s+52/15​",
-      "prefix": "−2s−12+0.8s+5.6=s2.8s2+17.6s+16​",
-      "suffix": "求逆变换得到系统全响应：i(t)=(1.6+34​e−2t−15",
-      "pos": 4467,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "hzy",
-      "id": "mvkgptwcvqzf",
-      "created": 1792729265052,
-      "updated": 1792729292846
     }
   ],
   "deleted": [
@@ -44,6 +31,10 @@
     {
       "id": "mvkg8cdrs66o",
       "at": 1792728571429
+    },
+    {
+      "id": "mvkgptwcvqzf",
+      "at": 1792729298267
     }
   ]
 }
