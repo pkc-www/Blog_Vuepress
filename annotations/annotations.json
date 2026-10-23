@@ -13,45 +13,6 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
-    },
-    {
-      "quote": "令复变量 s=σ+jω（其中复变量 s 的取值范围称为 s 平面），得到双边拉普拉斯变换（象函数）",
-      "prefix": "e−σte−jωtdt=∫−∞∞​f(t)e−(σ+jω)tdt",
-      "suffix": "：F(s)=L[f(t)]=∫−∞∞​f(t)e−stdt其对应",
-      "pos": 201,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkh1audlh8o",
-      "created": 1792729800229,
-      "updated": 1792729800229
-    },
-    {
-      "quote": "拉普拉斯变换的解决思路是",
-      "prefix": "指数增长的信号（如 eat，a>0），傅里叶变换将无法直接应用。",
-      "suffix": "：在原信号 f(t) 上乘上一个指数衰减因子 e−σt，使其满足",
-      "pos": 67,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkh1i8kdrsm",
-      "created": 1792729809812,
-      "updated": 1792729809812
-    },
-    {
-      "quote": "F[f(t)e−σt]=∫−∞∞​f(t)e−σte−jωtdt=∫−∞∞​f(t)e−(σ+jω)tdt",
-      "prefix": "件，然后再进行傅里叶变换。对 f(t)e−σt 进行傅里叶变换：",
-      "suffix": "令复变量 s=σ+jω（其中复变量 s 的取值范围称为 s 平面",
-      "pos": 148,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkh2jks81ka",
-      "created": 1792729858204,
-      "updated": 1792729858204
     }
   ],
   "deleted": [
@@ -98,6 +59,18 @@
     {
       "id": "mvkgxzbf8dtj",
       "at": 1792729649266
+    },
+    {
+      "id": "mvkh2jks81ka",
+      "at": 1792729875869
+    },
+    {
+      "id": "mvkh1i8kdrsm",
+      "at": 1792729877030
+    },
+    {
+      "id": "mvkh1audlh8o",
+      "at": 1792729878093
     }
   ]
 }
