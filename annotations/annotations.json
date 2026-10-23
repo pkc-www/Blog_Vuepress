@@ -13,6 +13,19 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
+    },
+    {
+      "quote": "令复变量 s=σ+jω（其中复变量 s 的取值范围称为 s 平面），得到双边拉普拉斯变换（象函数）",
+      "prefix": "e−σte−jωtdt=∫−∞∞​f(t)e−(σ+jω)tdt",
+      "suffix": "：F(s)=L[f(t)]=∫−∞∞​f(t)e−stdt其对应",
+      "pos": 201,
+      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
+      "pageTitle": "第6章 拉普拉斯变换",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkh1audlh8o",
+      "created": 1792729800229,
+      "updated": 1792729800229
     }
   ],
   "deleted": [
