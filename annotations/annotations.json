@@ -13,32 +13,6 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
-    },
-    {
-      "quote": "例：求 F(s)=(s+2)(s2+2s+5)s+3​ 的逆变换 f(t)",
-      "prefix": "plex​(t)=2eαt[Ccosβt−Dsinβt]u(t)",
-      "suffix": "。 其极点为 p1​=−2，以及共轭复极点 p2,3​=−1±j",
-      "pos": 2954,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkgs4rszyxo",
-      "created": 1792729372456,
-      "updated": 1792729372456
-    },
-    {
-      "quote": "fcomplex​(t)=2eαt[Ccosβt−Dsinβt]u(t)",
-      "prefix": "也必定共轭：A1,2​=C±jD这一对共轭极点对应的时域分量为：",
-      "suffix": "例：求 F(s)=(s+2)(s2+2s+5)s+3​ 的逆变换",
-      "pos": 2918,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkgxlldtil4",
-      "created": 1792729627537,
-      "updated": 1792729627537
     }
   ],
   "deleted": [
@@ -73,6 +47,14 @@
     {
       "id": "mvkgr148cgwb",
       "at": 1792729337287
+    },
+    {
+      "id": "mvkgxlldtil4",
+      "at": 1792729631821
+    },
+    {
+      "id": "mvkgs4rszyxo",
+      "at": 1792729632756
     }
   ]
 }
