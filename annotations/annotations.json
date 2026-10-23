@@ -1,20 +1,6 @@
 {
   "version": 1,
-  "annotations": [
-    {
-      "quote": "铜或铝单根实心导线",
-      "prefix": " refer to the original PPT.单股导线：",
-      "suffix": "，很少使用。多股同材质绞线：TJ（铜绞线）、LJ（铝绞线）、GJ",
-      "pos": 352,
-      "page": "/post/电力系统分析/第3-4讲-稳态模型.html",
-      "pageTitle": "第3-4讲 稳态模型",
-      "color": "yellow",
-      "note": "布拉斯",
-      "id": "mvkg8cdrs66o",
-      "created": 1792728449199,
-      "updated": 1792728456924
-    }
-  ],
+  "annotations": [],
   "deleted": [
     {
       "id": "mvkemclln9nk",
@@ -27,6 +13,10 @@
     {
       "id": "mvkf2r43ofut",
       "at": 1792726528031
+    },
+    {
+      "id": "mvkg8cdrs66o",
+      "at": 1792728571429
     }
   ]
 }
