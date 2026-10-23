@@ -13,32 +13,6 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
-    },
-    {
-      "quote": "例：求 F(s)=s2+3s+2s3+5s2+9s+7​ 的逆变换",
-      "prefix": "多项式，分子最高次数比分母大多少，时域就会出现多少阶的冲激偶项：",
-      "suffix": "。 用长除法分离：F(s)=s+2+s2+3s+2s+3​=s+",
-      "pos": 3497,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkgr148cgwb",
-      "created": 1792729321064,
-      "updated": 1792729321064
-    },
-    {
-      "quote": "先用长除法分离出多项式",
-      "prefix": "kA​]=(k−1)!A​tk−1eptu(t)1) 非真分式 ",
-      "suffix": "，分子最高次数比分母大多少，时域就会出现多少阶的冲激偶项：例：求",
-      "pos": 3457,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkgr6axr1jy",
-      "created": 1792729327785,
-      "updated": 1792729327785
     }
   ],
   "deleted": [
@@ -65,6 +39,14 @@
     {
       "id": "mvkgqr39s916",
       "at": 1792729313569
+    },
+    {
+      "id": "mvkgr6axr1jy",
+      "at": 1792729336311
+    },
+    {
+      "id": "mvkgr148cgwb",
+      "at": 1792729337287
     }
   ]
 }
