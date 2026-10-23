@@ -1,6 +1,20 @@
 {
   "version": 1,
-  "annotations": [],
+  "annotations": [
+    {
+      "quote": "线性稳压",
+      "prefix": "分析全桥、DAB、乃至固态变压器（SST），用的都是同一套方法。",
+      "suffix": "（比如 7805）是让晶体管工作在放大区，多余的电压直接变成热，",
+      "pos": 77,
+      "page": "/post/电力电子进阶/第1章-从Buck-Boost讲起.html",
+      "pageTitle": "第1章 从 Buck/Boost 讲起：开关变换器的两条基本定律",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkeys8me3sd",
+      "created": 1792726323574,
+      "updated": 1792726323574
+    }
+  ],
   "deleted": [
     {
       "id": "mvkemclln9nk",
