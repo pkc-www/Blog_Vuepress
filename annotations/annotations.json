@@ -1,20 +1,6 @@
 {
   "version": 1,
-  "annotations": [
-    {
-      "quote": "在环形域 r<∣z−z0​∣<R 内解析的函数，可展开为正负幂次的级数 f(z)=∑n=−∞+∞​Cn​(z−z0​)n",
-      "prefix": "有聚点的子集（如一段弧）上相等，则在整个连通区域内恒等。定义： ",
-      "suffix": "。 正幂部分：在圆盘 ∣z−z0​∣<R 内收敛。负幂部分（主要",
-      "pos": 3802,
-      "page": "/post/复变函数/复变函数.html",
-      "pageTitle": "复变函数",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkossyar3ew",
-      "created": 1792742840722,
-      "updated": 1792742840722
-    }
-  ],
+  "annotations": [],
   "deleted": [
     {
       "id": "mvknxi7v35k6",
@@ -123,6 +109,10 @@
     {
       "id": "mvko370kbvrc",
       "at": 1792741649517
+    },
+    {
+      "id": "mvkossyar3ew",
+      "at": 1792742850403
     }
   ]
 }
