@@ -39,6 +39,19 @@
       "id": "mvkh1i8kdrsm",
       "created": 1792729809812,
       "updated": 1792729809812
+    },
+    {
+      "quote": "F[f(t)e−σt]=∫−∞∞​f(t)e−σte−jωtdt=∫−∞∞​f(t)e−(σ+jω)tdt",
+      "prefix": "件，然后再进行傅里叶变换。对 f(t)e−σt 进行傅里叶变换：",
+      "suffix": "令复变量 s=σ+jω（其中复变量 s 的取值范围称为 s 平面",
+      "pos": 148,
+      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
+      "pageTitle": "第6章 拉普拉斯变换",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkh2jks81ka",
+      "created": 1792729858204,
+      "updated": 1792729858204
     }
   ],
   "deleted": [
