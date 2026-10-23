@@ -1,6 +1,20 @@
 {
   "version": 1,
-  "annotations": [],
+  "annotations": [
+    {
+      "quote": "串联电阻：RT​=SN2​ΔPS​UN2​​×103 (Ω)串联电抗：XT​=100US​%​⋅SN​UN2​​ (Ω)，S_N 用 kVA 时等价于 XT​=SN​US​%UN2​​×10 (Ω)励磁电导：GT​=UN2​ΔP0​​×10−3 (S)励磁电纳：BT​=UN2​I0​%SN​​×10−5 (S)励磁无功：ΔQ0​=100I0​%​SN​ (kvar)",
+      "prefix": "、BT。单位：UN 用 kV，ΔP 用 kW，SN 用 kVA。",
+      "suffix": "变比 Ratio：kT = UN1/UN2，空载时两侧绕组线电压",
+      "pos": 4881,
+      "page": "/post/电力系统分析/第3-4讲-稳态模型.html",
+      "pageTitle": "第3-4讲 稳态模型",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkf2r43ofut",
+      "created": 1792726508739,
+      "updated": 1792726508739
+    }
+  ],
   "deleted": [
     {
       "id": "mvkemclln9nk",
