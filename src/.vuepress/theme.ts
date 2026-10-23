@@ -3,7 +3,7 @@ import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
 
 export default hopeTheme({
-  hostname: "https://pkc-www.github.io/my_study_blog", // 如果没有域名先随便填或留空
+  hostname: "https://pkc-www.github.io", // 只写域名，子路径由 config.ts 的 base 决定
   author: {
     name: "Avalanche",
     url: "https://github.com/pkc-www",
@@ -32,7 +32,10 @@ export default hopeTheme({
   },
 
   plugins: {
-    blog: true,
+    // 关闭自动摘要，文章卡片改为显示 frontmatter 里的 description
+    blog: {
+      excerptLength: 0,
+    },
 
     photoSwipe: {
       selector: "[vp-content] img:not([no-view])",
@@ -55,6 +58,15 @@ export default hopeTheme({
   markdown: {
     math: {
       type: "katex",
+    },
+    // 代码高亮：浅色 one-light，深色 one-dark-pro，显示行号
+    highlighter: {
+      type: "shiki",
+      themes: {
+        light: "one-light",
+        dark: "one-dark-pro",
+      },
+      lineNumbers: true,
     },
     alert: true,
     imgSize: true,

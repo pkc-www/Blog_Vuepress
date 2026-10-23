@@ -1,0 +1,469 @@
+// 博客首页（layouts/HomeBlog.vue）样式；由 client.ts 引入
+// 与博文大全页同一套语言：主色墨蓝、细线、等宽编号、克制的动效
+
+$ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+/* ---------- 课程辅助色：元素上设置 --h（色相），得到 --cc ---------- */
+// 浅色用较深的颜色保证对比，深色用较亮的；饱和度都压低，和墨蓝放在一起不跳
+.course-hue {
+  --cc: oklch(0.55 0.11 var(--h, 250));
+}
+
+html[data-theme="dark"] .course-hue {
+  --cc: oklch(0.76 0.1 var(--h, 250));
+}
+
+@keyframes hb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Hero：文字靠左，插画留在右侧 ---------- */
+.vp-blog-home .vp-blog-hero {
+  align-items: stretch;
+  margin-bottom: 0;
+
+  // 主题默认是一层灰色蒙版；换成左侧压暗 + 底部渐隐到页面底色
+  .vp-blog-mask::after {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--vp-c-bg) 92%, transparent) 0%,
+        color-mix(in srgb, var(--vp-c-bg) 70%, transparent) 38%,
+        transparent 68%
+      ),
+      linear-gradient(180deg, transparent 70%, var(--vp-c-bg) 100%);
+  }
+
+  // 深色背景图自带纯黑底，用 lighten 混合把黑色抬到页面底色，避免出现一块更黑的矩形
+  .vp-blog-mask.dark {
+    background-color: var(--vp-c-bg) !important;
+    background-blend-mode: lighten;
+  }
+
+  .vp-blog-hero-info,
+  > div:has(> .hb-hero) {
+    width: 100%;
+  }
+}
+
+.hb-hero {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  color: var(--vp-c-text);
+  text-align: start;
+
+  > * {
+    animation: hb-rise 0.8s $ease-out both;
+  }
+
+  @for $i from 1 through 5 {
+    > :nth-child(#{$i}) {
+      animation-delay: #{0.08s * ($i - 1)};
+    }
+  }
+}
+
+.hb-avatar {
+  display: block;
+  width: 88px;
+  height: 88px;
+  margin: 0 0 1.75rem !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 3px var(--vp-c-bg),
+    0 0 0 4px color-mix(in srgb, var(--vp-c-accent) 60%, transparent),
+    0 12px 32px -8px rgb(0 0 0 / 35%) !important;
+}
+
+.hb-eyebrow {
+  margin: 0 0 0.75rem;
+  background: linear-gradient(90deg, var(--vp-c-accent), oklch(0.65 0.13 300) 60%, oklch(0.7 0.1 185));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hb-title {
+  margin: 0;
+  color: var(--vp-c-text);
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.hb-quote {
+  max-width: 30em;
+  margin: 1.5rem 0 0;
+  padding: 0 0 0 1rem;
+  border-inline-start: 2px solid var(--vp-c-accent);
+
+  p {
+    margin: 0;
+    color: var(--vp-c-text);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+    opacity: 0.88;
+  }
+
+  cite {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--vp-c-text-mute);
+    font-size: 0.85rem;
+    font-style: normal;
+    letter-spacing: 0.06em;
+  }
+}
+
+.hb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2.25rem;
+}
+
+.hb-btn {
+  display: inline-flex;
+  gap: 0.4em;
+  align-items: center;
+  padding: 0.65rem 1.35rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    transform 0.25s $ease-out,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+
+    svg {
+      transform: translateX(3px);
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
+  }
+}
+
+.hb-btn-primary {
+  background: linear-gradient(120deg, var(--vp-c-accent), color-mix(in oklch, var(--vp-c-accent), oklch(0.6 0.13 300) 45%));
+  color: #fff !important;
+  box-shadow: 0 8px 22px -10px var(--vp-c-accent);
+
+  &:hover {
+    box-shadow: 0 12px 28px -10px var(--vp-c-accent);
+  }
+}
+
+.hb-btn-ghost {
+  border-color: color-mix(in srgb, var(--vp-c-text) 22%, transparent);
+  background: color-mix(in srgb, var(--vp-c-bg) 55%, transparent);
+  color: var(--vp-c-text);
+  backdrop-filter: blur(8px);
+
+  &:hover {
+    border-color: var(--vp-c-accent);
+    color: var(--vp-c-accent);
+  }
+}
+
+/* ---------- 按课程浏览 ---------- */
+.hb-courses {
+  margin-bottom: 0.5rem;
+}
+
+.hb-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0.5rem 0 1rem;
+
+  h2 {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--vp-c-text-mute);
+  }
+}
+
+.hb-section-latest {
+  margin-top: 2.25rem;
+}
+
+.hb-more {
+  color: var(--vp-c-accent);
+  font-size: 0.85rem;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
+// flex 换行让每一行都铺满，7 门课不会留空格
+.hb-course-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hb-course {
+  position: relative;
+  flex: 1 1 9.5rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-elv);
+  color: var(--vp-c-text) !important;
+  transition:
+    transform 0.25s $ease-out,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+
+  // 每门课自己的颜色：左上角淡淡一抹 + 顶部色条
+  background:
+    radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--cc) 9%, transparent), transparent 65%),
+    var(--vp-c-bg-elv);
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: var(--cc);
+    opacity: 0.55;
+    transition: opacity 0.25s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--cc) 50%, var(--vp-c-divider));
+    box-shadow: 0 10px 24px -14px color-mix(in srgb, var(--cc) 60%, transparent);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+.hb-course-no {
+  color: var(--cc);
+  font-family: var(--vp-font-mono);
+  font-size: 0.75rem;
+  transition: color 0.2s ease;
+}
+
+.hb-course-name {
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hb-course-count {
+  color: var(--vp-c-text-mute);
+  font-size: 0.78rem;
+}
+
+/* ---------- 文章列表 ---------- */
+.vp-blog-home {
+  .vp-article-wrapper {
+    margin-bottom: 0.9rem;
+  }
+
+  .vp-article-item {
+    position: relative;
+    padding: 1.25rem 1.5rem;
+    border-radius: 14px;
+    background: var(--vp-c-bg-elv);
+    overflow: hidden;
+
+    // 悬停时左侧出现主色细条
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+      background: var(--vp-c-accent);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.35s $ease-out;
+    }
+
+    &:hover::before {
+      transform: scaleY(1);
+    }
+  }
+
+  .vp-article-title {
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--vp-c-accent);
+    }
+  }
+
+  .vp-article-excerpt {
+    color: var(--vp-c-text-mute);
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+
+  .vp-article-hr {
+    border-top-style: dashed;
+    opacity: 0.7;
+  }
+
+  .page-info {
+    font-size: 0.8rem;
+  }
+
+  // 分类、标签统一成主色浅底，不用主题的彩色
+  .page-category-item,
+  .page-tag-item {
+    background: color-mix(in srgb, var(--vp-c-accent) 10%, transparent) !important;
+    color: var(--vp-c-accent) !important;
+  }
+
+  // 分页
+  .vp-pagination-list .vp-pagination-number > div,
+  .vp-pagination-button {
+    border-radius: 8px;
+  }
+
+  // 底部欢迎语
+  > [vp-content] {
+    color: var(--vp-c-text-mute);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+}
+
+/* ---------- 右侧博主卡片 ---------- */
+.vp-blog-home .vp-blog-info-wrapper {
+  .vp-blogger-info,
+  .vp-blog-infos {
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 14px;
+    background: var(--vp-c-bg-elv);
+    box-shadow: none;
+  }
+
+  .vp-blogger-avatar {
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 3px var(--vp-c-bg-elv),
+      0 0 0 4px color-mix(in srgb, var(--vp-c-accent) 55%, transparent);
+    transition: transform 0.4s $ease-out;
+
+    &:hover {
+      transform: rotate(-4deg) scale(1.04);
+    }
+  }
+
+  .vp-blogger-name {
+    font-weight: 650;
+    letter-spacing: 0.04em;
+  }
+
+  .vp-blogger-description {
+    color: var(--vp-c-text-mute);
+    letter-spacing: 0.12em;
+  }
+
+  .vp-blog-type-button {
+    transition:
+      transform 0.25s $ease-out,
+      background-color 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* ---------- 窄屏：文字居中，蒙版加重 ---------- */
+@media (max-width: 719px) {
+  .vp-blog-home .vp-blog-hero .vp-blog-mask::after {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--vp-c-bg) 55%, transparent),
+        color-mix(in srgb, var(--vp-c-bg) 80%, transparent) 60%,
+        var(--vp-c-bg)
+      );
+  }
+
+  .hb-hero {
+    text-align: center;
+  }
+
+  .hb-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+
+  .hb-avatar {
+    margin-inline: auto !important;
+  }
+
+  .hb-quote {
+    margin-inline: auto;
+    padding: 0;
+    border: none;
+  }
+
+  .hb-actions {
+    justify-content: center;
+  }
+}

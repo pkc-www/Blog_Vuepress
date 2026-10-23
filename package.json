@@ -11,6 +11,9 @@
     "docs:update-package": "npx vp-update"
   },
   "devDependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/noto-serif-sc": "^5.3.1",
+    "@fontsource/source-serif-4": "^5.3.1",
     "@vuepress/bundler-vite": "2.0.0-rc.26",
     "@vuepress/plugin-slimsearch": "^2.0.0-rc.61",
     "katex": "^0.16.40",

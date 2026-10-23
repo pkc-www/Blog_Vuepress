@@ -1,0 +1,324 @@
+// 文章阅读页版面：窄一点的左侧目录栏（可收起）；右侧一栏放「此页内容」卡片和旁注
+// 左右两栏离屏幕边缘的距离保持一致
+$edge: 24px;
+$column: 288px;
+
+:root {
+  --rd-edge: #{$edge};
+  --rd-column: #{$column};
+}
+
+@media (min-width: 960px) {
+  html.rd-page {
+    #app {
+      --sidebar-width: 15rem;
+      // 主题在超宽屏会把侧边栏区域撑得很宽、正文居中，这里固定为卡片宽度加左边距
+      --sidebar-space: calc(var(--sidebar-width) + #{$edge});
+    }
+
+    // 左侧目录栏做成和「此页内容」一样的卡片：有边框、圆角，离左边缘和底部 24px，高度固定
+    .vp-sidebar {
+      top: calc(var(--navbar-height, 3.75rem) + 16px);
+      bottom: $edge;
+      left: $edge;
+      box-sizing: border-box;
+      width: var(--sidebar-width);
+      padding: 0;
+      border: 1px solid var(--vp-c-divider);
+      border-radius: 12px;
+      background: var(--vp-c-bg-elv);
+      box-shadow: 0 2px 10px rgb(0 0 0 / 5%);
+      backdrop-filter: none;
+      font-size: 0.94rem;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+      // 滚动条：细、深色，不抢眼
+      scrollbar-width: thin;
+      scrollbar-color: rgb(0 0 0 / 16%) transparent;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background: rgb(0 0 0 / 16%);
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      > .vp-sidebar-links {
+        padding: 0.75rem 0.5rem 1rem;
+
+        > li:not(:first-child) {
+          margin-top: 0.75rem;
+        }
+
+        // 第一行「博客主页」缩短，右边放收起按钮
+        > li:first-child > .vp-sidebar-link {
+          width: calc(100% - 3.5rem);
+        }
+      }
+
+      // 行距放宽一些
+      .vp-sidebar-link,
+      .vp-sidebar-header {
+        padding-block: 0.42rem;
+        line-height: 1.55;
+      }
+    }
+
+    .vp-page {
+      padding-inline-end: 2.5rem;
+      transition: padding 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    // 右侧给目录卡片和旁注留一栏
+    @media (min-width: 1180px) {
+      .vp-page {
+        padding-inline-end: calc(#{$edge} + #{$column} + 40px);
+      }
+    }
+
+    // 收放按钮和目录都由 ReadingControls 提供
+    .toggle-sidebar-wrapper,
+    .vp-toc-placeholder {
+      display: none !important;
+    }
+  }
+
+  html[data-theme="dark"].rd-page .vp-sidebar {
+    scrollbar-color: rgb(255 255 255 / 12%) transparent;
+
+    &::-webkit-scrollbar-thumb {
+      background: rgb(255 255 255 / 12%);
+    }
+  }
+
+  html.rd-page.rd-nosb {
+    .vp-sidebar {
+      box-shadow: none;
+      transform: translateX(calc(-100% - #{$edge} - 4px));
+    }
+
+    .vp-page,
+    .vp-page + .vp-footer-wrapper {
+      padding-inline-start: 2.5rem !important;
+    }
+  }
+}
+
+.rd-ui {
+  @media (max-width: 959px) {
+    display: none;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+}
+
+.rd-sb-toggle {
+  position: fixed;
+  // 和卡片第一行「博客主页」对齐，放在卡片内右上角
+  top: calc(var(--navbar-height, 3.75rem) + 16px + 0.75rem + 2px);
+  left: calc(#{$edge} + 15rem - 34px - 12px);
+  z-index: 101;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg-elv);
+  color: var(--vp-c-text-mute);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  transition:
+    left 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    border-color: var(--vp-c-accent);
+    color: var(--vp-c-accent);
+  }
+
+  &.off {
+    left: $edge;
+  }
+}
+
+.rd-toc-card {
+  position: fixed;
+  top: calc(var(--navbar-height, 3.75rem) + 16px);
+  right: $edge;
+  z-index: 120;
+  box-sizing: border-box;
+  width: $column;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-elv);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 5%);
+  overflow: hidden;
+  transition:
+    box-shadow 0.3s,
+    border-color 0.3s;
+
+  &.open {
+    box-shadow: 0 14px 36px -16px rgb(20 30 50 / 25%);
+  }
+}
+
+[data-theme="dark"] .rd-toc-card.open {
+  box-shadow: 0 14px 36px -16px rgb(0 0 0 / 70%);
+}
+
+.rd-toc-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  border: none;
+  background: none;
+  color: var(--vp-c-text);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: start;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--vp-c-accent);
+  }
+
+  .rd-toc-count {
+    flex: 1;
+    color: var(--vp-c-text-mute);
+    font-size: 12.5px;
+    font-weight: 400;
+  }
+
+  .rd-chev {
+    color: var(--vp-c-text-mute);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .open & .rd-chev {
+    transform: rotate(180deg);
+  }
+}
+
+// 用 grid 行高从 0fr 到 1fr 做展开动画，高度自适应
+.rd-toc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+
+  .open & {
+    grid-template-rows: 1fr;
+  }
+}
+
+.rd-toc-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rd-toc {
+  // 不要太长，给下面的旁注留位置
+  max-height: min(40vh, 360px);
+  padding: 4px 6px 10px;
+  overflow-y: auto;
+  border-top: 1px solid var(--vp-c-divider);
+  overscroll-behavior: contain;
+  opacity: 0;
+  transition: opacity 0.25s;
+
+  .open & {
+    opacity: 1;
+    transition-delay: 0.08s;
+  }
+
+  // 滚动条：细、低调
+  scrollbar-width: thin;
+  scrollbar-color: rgb(127 127 127 / 30%) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: rgb(127 127 127 / 30%);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  a {
+    display: block;
+    position: relative;
+    margin-top: 2px;
+    padding: 5px 10px;
+    border-radius: 7px;
+    color: var(--vp-c-text-mute);
+    font-size: 14px;
+    line-height: 1.5;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition:
+      color 0.2s,
+      background 0.2s;
+
+    &:hover {
+      background: var(--vp-c-control, rgb(127 127 127 / 10%));
+      color: var(--vp-c-text);
+    }
+
+    &.lv2 {
+      color: var(--vp-c-text);
+      font-weight: 600;
+    }
+
+    &.lv3 {
+      padding-inline-start: 22px;
+    }
+
+    &.active {
+      color: var(--vp-c-accent);
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 6px auto 6px 2px;
+        width: 3px;
+        border-radius: 2px;
+        background: var(--vp-c-accent);
+      }
+    }
+  }
+}
+
+[data-theme="dark"] .rd-toc {
+  scrollbar-color: rgb(255 255 255 / 14%) transparent;
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 14%);
+  }
+}
+
+// 中等宽度没有右侧栏，卡片浮在正文上方，默认收起
+@media (max-width: 1179px) {
+  .rd-toc-card {
+    width: 260px;
+  }
+}

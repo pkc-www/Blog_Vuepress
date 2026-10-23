@@ -1,0 +1,173 @@
+// 全站动效（由 client.ts 引入，配合 motion.ts）
+// 原则：短、轻、只动 opacity / transform；系统开启“减弱动态效果”时全部关闭
+
+$ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+/* ---------- 阅读进度条：贴在导航栏下沿 ---------- */
+.mo-progress {
+  position: fixed;
+  top: var(--navbar-height, 3.75rem);
+  left: 0;
+  z-index: 200;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--vp-c-accent) 30%, transparent),
+    var(--vp-c-accent)
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+// 首页是整屏背景图，不显示进度条
+html:has(.vp-blog-home) .mo-progress {
+  display: none;
+}
+
+/* ---------- 导航栏：页面顶部时不带阴影，滚动后浮起 ---------- */
+.vp-navbar {
+  transition:
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+
+  &:not(.mo-scrolled) {
+    box-shadow: none;
+  }
+}
+
+/* ---------- 页面切换入场 ---------- */
+@keyframes mo-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.vp-page.mo-page-enter {
+  animation: mo-page-enter 0.45s $ease-out both;
+}
+
+/* ---------- 滚动渐显 ---------- */
+.mo-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s $ease-out;
+
+  &.mo-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- 首页：标题、头像依次浮现 ---------- */
+@keyframes mo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.vp-blog-hero {
+  .vp-blog-hero-image {
+    animation: mo-rise 0.8s $ease-out both;
+  }
+
+  .vp-blog-hero-title {
+    animation: mo-rise 0.8s 0.12s $ease-out both;
+  }
+
+  .vp-blog-hero-description {
+    animation: mo-rise 0.8s 0.24s $ease-out both;
+  }
+
+  .vp-hero-slide-down-button {
+    animation: mo-rise 0.8s 0.5s $ease-out both;
+  }
+}
+
+/* ---------- 侧边栏：悬停轻推 ---------- */
+.vp-sidebar-link {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.25s $ease-out;
+
+  &:not(.active):hover {
+    transform: translateX(3px);
+  }
+}
+
+/* ---------- 正文链接：下划线从左向右展开 ---------- */
+[vp-content] a:not(.header-anchor, .route-link-active, .post-index a, .vp-article-title) {
+  border-bottom: none;
+  background: linear-gradient(currentcolor, currentcolor) left bottom / 0 1px no-repeat;
+  transition:
+    background-size 0.3s $ease-out,
+    color 0.2s ease;
+
+  &:hover {
+    background-size: 100% 1px;
+    text-decoration: none;
+  }
+}
+
+// 博文大全页的卡片链接不要下划线（主题默认悬停会加 underline）
+[vp-content] .post-index a:hover {
+  text-decoration: none;
+}
+
+/* ---------- 按钮类元素按下时的回弹 ---------- */
+.vp-color-mode-switch,
+.vp-repo-link,
+.slimsearch-button,
+.vp-pagination-button,
+.vp-blog-type-button {
+  transition: transform 0.15s ease;
+
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+/* ---------- 减弱动态效果 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .mo-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media print {
+  .mo-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .mo-progress {
+    display: none;
+  }
+}

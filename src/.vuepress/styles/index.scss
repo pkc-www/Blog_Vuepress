@@ -1,100 +1,264 @@
-/* ========================================= 
-   1. 全局图片及公式居中样式
-      ========================================= */ 
-    [vp-content] { 
+/* =========================================
+   0. 正文排版
+   ========================================= */
+[vp-content] {
+  font-size: 1.1rem; // ≈17.6px（宋体和 Times 字面偏小，比原来大一号）
+  line-height: 1.85;
+  letter-spacing: 0.01em;
 
-    img,
-    figure img { 
-    
-    display: block; 
-    margin: 16px auto !important; 
-  } 
-  figcaption { 
-    text-align: center; 
-    font-size: 0.9em; 
-    opacity: 0.8; 
-  } 
+  p,
+  ul,
+  ol {
+    margin-block: 1em;
+  }
+
+  li + li {
+    margin-top: 0.3em;
+  }
+
+  // 标题：上方多留白，h2 带细分隔线
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+
+  h2 {
+    margin-top: 2.4em;
+    padding-bottom: 0.35em;
+    border-bottom: 1px solid var(--vp-c-divider);
+  }
+
+  h3 {
+    margin-top: 1.9em;
+  }
+
+  strong {
+    color: var(--vp-c-text);
+    font-weight: 650;
+  }
+
+  // 引用块
+  blockquote {
+    border-inline-start: 4px solid var(--vp-c-accent-soft, var(--vp-c-divider));
+    color: var(--vp-c-text-mute);
+  }
+
+  // 表格
+  table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  // 链接
+  a:not(.header-anchor) {
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+
+    &:hover {
+      border-bottom-color: currentcolor;
+    }
+  }
 }
 
-/* ========================================= 
-   2. 深色模式 - 智能反色与 Hover 恢复
-      ========================================= */ 
-      /* 这里的逻辑：[深色模式下] + [非SVG] + [非头像] 的图片 */
-      html.dark img:not([src$=".svg"]):not([src*="ava"]):not(.avatar),
-      [data-theme="dark"] img:not([src$=".svg"]):not([src*="ava"]):not(.avatar) {
+/* =========================================
+   1. 代码
+   ========================================= */
+[vp-content] {
+  // 行内代码：浅色底 + 主色文字
+  :not(pre) > code {
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    background: var(--vp-c-control);
+    color: var(--vp-c-accent);
+    font-size: 0.88em;
+  }
 
-    filter: invert(1) hue-rotate(180deg) !important; /* 使用 invert(1) 彻底消除灰底和褪色边框 */
-    mix-blend-mode: screen !important; /* screen 混合模式更干净，消除底色更平滑 */
-    box-shadow: none !important; /* 消除暗色阴影被反相后产生的白色褪色感光晕 */
-    background-color: transparent !important;
-    border-radius: 6px !important;
-    transition: all 0.3s ease !important;
-      }
+  // 代码块：圆角 + 细边框
+  div[class*="language-"] {
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 8px;
+    overflow: hidden;
+  }
 
-/* 关键修复：这里的 hover 必须包含同样的 :not 条件，确保优先级绝对胜出 */
+  pre,
+  code {
+    font-variant-ligatures: none;
+  }
+}
+
+/* =========================================
+   2. 提示框（> [!NOTE] / [!CAUTION] 等）：柔和底色 + 左侧色条
+   ========================================= */
+@each $type in (note, info, tip, important, warning, caution) {
+  .hint-container.#{$type} {
+    border-inline-start: 4px solid var(--#{$type}-c-accent);
+    border-radius: 6px;
+  }
+}
+
+/* =========================================
+   3. 全局图片及公式居中、圆角
+   ========================================= */
+[vp-content] {
+  img,
+  figure img {
+    display: block;
+    margin: 16px auto !important;
+    border-radius: 6px;
+  }
+
+  figcaption {
+    text-align: center;
+    font-size: 0.9em;
+    opacity: 0.8;
+  }
+
+  // 公式块上下留白
+  .katex-display {
+    margin-block: 1.2em;
+  }
+}
+
+// 浅色模式下位图加一层很淡的阴影
+html:not([data-theme="dark"]) [vp-content] img:not([src$=".svg"]) {
+  box-shadow: 0 2px 12px rgb(0 0 0 / 6%);
+}
+
+/* =========================================
+   4. 深色模式 - 智能反色与 Hover 恢复
+   ========================================= */
+/* [深色模式下] + [非SVG] + [非头像] 的图片 */
+html.dark img:not([src$=".svg"]):not([src*="ava"]):not(.avatar),
+[data-theme="dark"] img:not([src$=".svg"]):not([src*="ava"]):not(.avatar) {
+  filter: invert(1) hue-rotate(180deg) !important; /* 使用 invert(1) 彻底消除灰底和褪色边框 */
+  mix-blend-mode: screen !important; /* screen 混合模式更干净，消除底色更平滑 */
+  box-shadow: none !important; /* 消除暗色阴影被反相后产生的白色褪色感光晕 */
+  background-color: transparent !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease !important;
+}
+
+/* hover 必须包含同样的 :not 条件，确保优先级胜出 */
 html.dark img:not([src$=".svg"]):not([src*="ava"]):not(.avatar):hover,
 [data-theme="dark"] img:not([src$=".svg"]):not([src*="ava"]):not(.avatar):hover {
-  filter: none !important;           /* 强制清除滤镜 */
+  filter: none !important; /* 强制清除滤镜 */
   mix-blend-mode: normal !important; /* 强制恢复正常混合模式 */
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6) !important; /* 增加精致深色阴影突出原图质感 */
-  transform: scale(1.03) !important; /* 略微增加放大比例 */
-  background-color: #fff !important; /* 添加白色底色，确保透明底公式图在 hover 时清晰可见 */
+  box-shadow: 0 8px 24px rgb(0 0 0 / 60%) !important; /* 深色阴影突出原图质感 */
+  transform: scale(1.03) !important; /* 略微放大 */
+  background-color: #fff !important; /* 白色底色，确保透明底公式图在 hover 时清晰可见 */
   border-radius: 6px !important;
-  cursor: zoom-in;                   /* 提示可以查看原图 */
+  cursor: zoom-in; /* 提示可以查看原图 */
 }
 
-/* ========================================= 
-   3. 头像特权保护区 (绝对禁止任何滤镜)
-      ========================================= */ 
-      .vp-blog-infos-avatar img, 
-      .vp-blog-hero-image img, 
-      img[src*="ava"],
-      img.avatar {
+/* =========================================
+   5. 头像保护区 (禁止任何滤镜)
+   ========================================= */
+.vp-blog-infos-avatar img,
+.vp-blog-hero-image img,
+img[src*="ava"],
+img.avatar {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  box-shadow: none !important;
+  transition: transform 0.3s ease !important;
+}
 
-    filter: none !important;
-    mix-blend-mode: normal !important;
-    transition: transform 0.3s ease !important;
-      }
-
-/* 头像也可以加个简单的 hover 缩放，不影响颜色 */
 .vp-blog-infos-avatar img:hover,
 .vp-blog-hero-image img:hover {
   transform: rotate(5deg) scale(1.1);
 }
 
-/* ========================================= 
-   4. 浅色模式 - SVG 反色处理
-      ========================================= */ 
-      html:not(.dark) img[src$=".svg"],
-      [data-theme="light"] img[src$=".svg"] {
+/* =========================================
+   6. 浅色模式 - SVG 反色处理
+   ========================================= */
+html:not(.dark) img[src$=".svg"],
+[data-theme="light"] img[src$=".svg"] {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
 
-    filter: invert(1) hue-rotate(180deg) !important;
-      }
-      
-/* ========================================= 
-   5. 首页 Hero 区域文字颜色精准适配
-   ========================================= */ 
+/* =========================================
+   7. 首页 Hero 区域
+   ========================================= */
+.vp-blog-hero {
+  .vp-blog-hero-title {
+    letter-spacing: 0.06em;
+  }
 
-/* 模式 A：白天模式 (强制黑字) */
-[data-theme="light"], 
+  .vp-blog-hero-description {
+    letter-spacing: 0.04em;
+  }
+}
+
+/* 浅色模式：黑字 */
+[data-theme="light"],
 html:not([data-theme="dark"]) {
   .vp-blog-hero {
     .vp-blog-hero-title,
     .vp-blog-hero-description {
-      color: #1a1a1a !important; /* 深黑色 */
-      text-shadow: none !important; 
+      color: #1a1a1a !important;
+      text-shadow: none !important;
     }
   }
 }
 
-/* 模式 B：深色模式 (强制白字，防止被上面误伤) */
+/* 深色模式：白字 + 轻微阴影，让字在背景图上更立体 */
 [data-theme="dark"] {
   .vp-blog-hero {
     .vp-blog-hero-title,
     .vp-blog-hero-description {
-      color: #ffffff !important; /* 纯白色 */
-      /* 给深色模式加回一点阴影，让字在背景图上更立体 */
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important; 
+      color: #fff !important;
+      text-shadow: 0 2px 4px rgb(0 0 0 / 80%) !important;
     }
   }
+}
+
+/* =========================================
+   8. 首页文章卡片：圆角 + 悬停上浮
+   ========================================= */
+.vp-article-item {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 5%);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background var(--vp-t-color);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgb(0 0 0 / 10%);
+  }
+}
+
+[data-theme="dark"] .vp-article-item {
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: 0 8px 22px rgb(0 0 0 / 40%);
+  }
+}
+
+/* =========================================
+   9. 博文大全页（src/post/README.md）：加宽版心，隐藏默认标题
+   ========================================= */
+.post-index-page {
+  .vp-page {
+    padding-inline: 0;
+  }
+
+  [vp-content] {
+    max-width: 1120px;
+  }
+
+  .vp-page-title {
+    display: none;
+  }
+}
+
+[data-theme="dark"] .post-index-page .pi-card:hover {
+  box-shadow: 0 14px 36px -12px rgb(0 0 0 / 60%);
 }

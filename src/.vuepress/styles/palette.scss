@@ -1,7 +1,40 @@
-// you can change colors here
-$sidebar-width: 15rem;
+// 配色与字体（覆盖 vuepress-theme-hope 默认值）
 
-// 增加正文内容区域的宽度
-$content-width: 900px;
-$pc-content-width: 1100px;
-$wide-content-width: 1400px;
+// ---------- 背景与文字 ----------
+// 浅色：暖白；深色：深墨灰
+$vp-c-bg: (
+  light: #fcfbf8,
+  dark: #111318,
+);
+$vp-c-bg-alt: (
+  light: #f5f3ee,
+  dark: #0c0e11,
+);
+$vp-c-bg-elv: (
+  light: #ffffff,
+  dark: #191c21,
+);
+$vp-c-text: (
+  light: #2b2f36,
+  dark: rgb(232 234 238 / 88%),
+);
+$vp-c-divider: (
+  light: #e6e3dc,
+  dark: #262a31,
+);
+
+// ---------- 字体 ----------
+// 中文用宋体（SimSun），西文和数字用 Times New Roman，代码用 JetBrains Mono
+// 这两款是系统字体，不用下载；没有它们的设备（手机、Linux）再回退到自托管的思源宋体 / Source Serif 4，
+// 浏览器只在系统字体缺字时才会下载这些备用字体
+$vp-font: '"Times New Roman", Times, SimSun, "宋体", "Songti SC", STSong, "Noto Serif SC", "Source Serif 4", serif, "Apple Color Emoji", "Segoe UI Emoji"';
+$vp-font-heading: $vp-font;
+$vp-font-mono: '"JetBrains Mono", "Cascadia Code", Consolas, SimSun, "Noto Serif SC", monospace';
+
+// ---------- 布局 ----------
+$sidebar-width: 16rem;
+
+// 正文宽度：约 40 个汉字一行，适合阅读
+$content-width: 780px;
+$wide-content-width: 1000px;
+$home-page-width: 1160px;

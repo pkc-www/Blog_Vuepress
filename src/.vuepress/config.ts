@@ -1,11 +1,13 @@
 import { defineUserConfig } from "vuepress";
 
+import { postIndexPlugin } from "./plugins/post-index.js";
 import theme from "./theme.js";
 
 export default defineUserConfig({
-  base: "/Blog_Vuepress/", // 如果你要部署到 GitHub Pages 的子目录，这里需要改，比如 "/my-blog/"
+  base: "/Blog_Vuepress/", // 与 GitHub 仓库名 pkc-www/Blog_Vuepress 一致
   lang: "zh-CN",
   title: "Avalache's Blog", // 浏览器标签页的名字
   description: "THU DEE", 
   theme,
+  plugins: [postIndexPlugin()],
 });

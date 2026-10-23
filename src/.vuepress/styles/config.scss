@@ -1,2 +1,14 @@
-// you can change config here
-$theme-color: #096dd9;
+// 主题配置变量（覆盖 vuepress-theme-hope 默认值）
+
+// 主色：墨蓝
+$theme-color: #2f5d8a;
+
+// 代码块配色（与 theme.ts 中 shiki 的 one-light / one-dark-pro 对应）
+$code-color: (
+  light: #383a42,
+  dark: #abb2bf,
+);
+$code-bg-color: (
+  light: #f6f7f9,
+  dark: #181b20,
+);
