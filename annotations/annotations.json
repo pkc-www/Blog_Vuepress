@@ -26,6 +26,19 @@
       "id": "mvkgs4rszyxo",
       "created": 1792729372456,
       "updated": 1792729372456
+    },
+    {
+      "quote": "fcomplex​(t)=2eαt[Ccosβt−Dsinβt]u(t)",
+      "prefix": "也必定共轭：A1,2​=C±jD这一对共轭极点对应的时域分量为：",
+      "suffix": "例：求 F(s)=(s+2)(s2+2s+5)s+3​ 的逆变换",
+      "pos": 2918,
+      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
+      "pageTitle": "第6章 拉普拉斯变换",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkgxlldtil4",
+      "created": 1792729627537,
+      "updated": 1792729627537
     }
   ],
   "deleted": [
