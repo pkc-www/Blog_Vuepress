@@ -1,6 +1,20 @@
 {
   "version": 1,
-  "annotations": [],
+  "annotations": [
+    {
+      "quote": "正幂部分：在圆盘 ∣z−z0​∣<R 内收敛。",
+      "prefix": "幂次的级数 f(z)=∑n=−∞+∞​Cn​(z−z0​)n。 ",
+      "suffix": "负幂部分（主要部分）：在圆外 ∣z−z0​∣>r 内收敛。系数公",
+      "pos": 3864,
+      "page": "/post/复变函数/复变函数.html",
+      "pageTitle": "复变函数",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkot34n2o16",
+      "created": 1792742853911,
+      "updated": 1792742853911
+    }
+  ],
   "deleted": [
     {
       "id": "mvknxi7v35k6",
