@@ -26,6 +26,19 @@
       "id": "mvkhqpsipslq",
       "created": 1792730986002,
       "updated": 1792730986002
+    },
+    {
+      "quote": "f(z) 在 Cˉ 上所有孤立奇点（包括 ∞）的留数之和为 0",
+      "prefix": "≜−C−1​（取大圆环顺时针积分除以 2πi）。全局留数定理： ",
+      "suffix": "。∑Res有限​+Resinf​=0⟹∮C+​=−2πiRes[",
+      "pos": 5357,
+      "page": "/post/复变函数/复变函数.html",
+      "pageTitle": "复变函数",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkhr1ionoch",
+      "created": 1792731001200,
+      "updated": 1792731001200
     }
   ],
   "deleted": [
