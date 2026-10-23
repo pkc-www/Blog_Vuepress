@@ -13,19 +13,6 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
-    },
-    {
-      "quote": "F(s)=(s+1)(s+2)e−2s",
-      "prefix": "e−as 提出，只对有理分式求逆变换，最后应用时移性质：例：求 ",
-      "suffix": "​ 的逆变换。 设 F1​(s)=(s+1)(s+2)1​=s+",
-      "pos": 3672,
-      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
-      "pageTitle": "第6章 拉普拉斯变换",
-      "color": "yellow",
-      "note": "",
-      "id": "mvkgqr39s916",
-      "created": 1792729308069,
-      "updated": 1792729308069
     }
   ],
   "deleted": [
@@ -48,6 +35,10 @@
     {
       "id": "mvkgptwcvqzf",
       "at": 1792729298267
+    },
+    {
+      "id": "mvkgqr39s916",
+      "at": 1792729313569
     }
   ]
 }
