@@ -13,19 +13,6 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
-    },
-    {
-      "quote": "）的留数之和",
-      "prefix": "）。全局留数定理： f(z) 在 Cˉ 上所有孤立奇点（包括 ∞",
-      "suffix": "为 0。∑Res有限​+Resinf​=0⟹∮C+​=−2πiR",
-      "pos": 5379,
-      "page": "/post/复变函数/复变函数.html",
-      "pageTitle": "复变函数",
-      "color": "pink",
-      "note": "",
-      "id": "mvkh5zt5w992",
-      "created": 1792730019209,
-      "updated": 1792730019209
     }
   ],
   "deleted": [
@@ -88,6 +75,10 @@
     {
       "id": "mvkh5tqq6tpu",
       "at": 1792730017173
+    },
+    {
+      "id": "mvkh5zt5w992",
+      "at": 1792730020876
     }
   ]
 }
