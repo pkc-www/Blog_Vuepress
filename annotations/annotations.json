@@ -15,17 +15,17 @@
       "updated": 1792728819029
     },
     {
-      "quote": "定义： Res[f(z),∞]≜−C−1​（取大圆环顺时针积分除以 2πi）",
-      "prefix": "能通过展开 Laurent 级数找 C−1​，没有任何捷径公式。",
-      "suffix": "。全局留数定理： f(z) 在 Cˉ 上所有孤立奇点（包括 ∞）",
-      "pos": 5310,
+      "quote": "）的留数之和",
+      "prefix": "）。全局留数定理： f(z) 在 Cˉ 上所有孤立奇点（包括 ∞",
+      "suffix": "为 0。∑Res有限​+Resinf​=0⟹∮C+​=−2πiR",
+      "pos": 5379,
       "page": "/post/复变函数/复变函数.html",
       "pageTitle": "复变函数",
-      "color": "yellow",
+      "color": "pink",
       "note": "",
-      "id": "mvkh5tqq6tpu",
-      "created": 1792730011346,
-      "updated": 1792730011346
+      "id": "mvkh5zt5w992",
+      "created": 1792730019209,
+      "updated": 1792730019209
     }
   ],
   "deleted": [
@@ -84,6 +84,10 @@
     {
       "id": "mvkh1audlh8o",
       "at": 1792729878093
+    },
+    {
+      "id": "mvkh5tqq6tpu",
+      "at": 1792730017173
     }
   ]
 }
