@@ -13,6 +13,19 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
+    },
+    {
+      "quote": "如果 F(s) 不是真分式",
+      "prefix": "有：t→0+lim​f(t)=s→∞lim​sF(s)注意注意：",
+      "suffix": "（即分子最高次数 ≥ 分母最高次数），说明时域含有冲激项。在使用",
+      "pos": 2297,
+      "page": "/post/信号与系统/第6章-拉普拉斯变换.html",
+      "pageTitle": "第6章 拉普拉斯变换",
+      "color": "pink",
+      "note": "",
+      "id": "mvkgxzbf8dtj",
+      "created": 1792729645323,
+      "updated": 1792729645323
     }
   ],
   "deleted": [
