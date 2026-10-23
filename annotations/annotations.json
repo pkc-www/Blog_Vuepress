@@ -13,6 +13,19 @@
       "id": "mvkgfic0nmr8",
       "created": 1792728783504,
       "updated": 1792728819029
+    },
+    {
+      "quote": "无穷远点留数计算公式：Res[f(z),∞]=Res[−z21​f(z1​),0]💡 做题方法与技巧",
+      "prefix": "​+Resinf​=0⟹∮C+​=−2πiRes[f(z),∞]",
+      "suffix": "如果闭曲线内部包围了非常多（甚至无穷多个）奇点，而外部奇点很少（",
+      "pos": 5427,
+      "page": "/post/复变函数/复变函数.html",
+      "pageTitle": "复变函数",
+      "color": "yellow",
+      "note": "",
+      "id": "mvkhxzaxwrgk",
+      "created": 1792731324921,
+      "updated": 1792731324921
     }
   ],
   "deleted": [
