@@ -22,10 +22,10 @@
       "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
       "pageTitle": "第6讲 简单电力系统潮流计算",
       "color": "green",
-      "note": "$\\dot U_2$ 是参考方向，认为是实数。",
+      "note": "复功率定义 $\\dot S=\\dot U\\dot I^*$，所以\n\n$$\\dot I=\\frac{\\dot S_2^*}{\\dot U_2^*}=\\frac{P_2-jQ_2}{U_2}$$\n这一步用到了 $\\dot U_2$ 是实数这个设定。$\\dot U_2$ 是参考方向，认为是实数。",
       "id": "mvornmudmqkm",
       "created": 1792989503077,
-      "updated": 1792989528961
+      "updated": 1792989550230
     }
   ],
   "deleted": [
