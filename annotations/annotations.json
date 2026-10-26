@@ -13,6 +13,19 @@
       "id": "mvonu0fdsqba",
       "created": 1792983082153,
       "updated": 1792983082153
+    },
+    {
+      "quote": "ΔU˙2​=U˙1​−U˙2​=U2​P2​R+Q2​X​+jU2​P2​X−Q2​R​",
+      "prefix": "=P2​+jQ2​、末端电压为 U˙2​。以 U˙2​ 为参考：",
+      "suffix": "实部为纵分量 longitudinal component ΔU",
+      "pos": 916,
+      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
+      "pageTitle": "第6讲 简单电力系统潮流计算",
+      "color": "green",
+      "note": "",
+      "id": "mvornmudmqkm",
+      "created": 1792989503077,
+      "updated": 1792989503077
     }
   ],
   "deleted": [
