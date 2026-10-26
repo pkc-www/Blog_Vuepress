@@ -52,6 +52,19 @@
       "id": "mvortw2dte6v",
       "created": 1792989794965,
       "updated": 1792989794965
+    },
+    {
+      "quote": "ΔU1​+jδU1​ 与 ΔU2​+jδU2​ 的相量本身相同，但纵、横分量数值不同；因此 ΔU1​=ΔU2​、δU1​=δU2​",
+      "prefix": "same quantity convention.两个参考轴下，",
+      "suffix": "。电压降 Voltage drop：相量差 dU˙=U˙1​−U",
+      "pos": 1325,
+      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
+      "pageTitle": "第6讲 简单电力系统潮流计算",
+      "color": "yellow",
+      "note": "",
+      "id": "mvoruszdoyvc",
+      "created": 1792989837625,
+      "updated": 1792989837625
     }
   ],
   "deleted": [
