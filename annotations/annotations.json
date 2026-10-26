@@ -22,10 +22,10 @@
       "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
       "pageTitle": "第6讲 简单电力系统潮流计算",
       "color": "green",
-      "note": "",
+      "note": "$S = \\dot U,\\dot I^$",
       "id": "mvorgxcrjt8p",
       "created": 1792989190107,
-      "updated": 1792989190107
+      "updated": 1792989273043
     }
   ],
   "deleted": [
