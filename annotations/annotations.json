@@ -13,19 +13,6 @@
       "id": "mvonu0fdsqba",
       "created": 1792983082153,
       "updated": 1792983082153
-    },
-    {
-      "quote": "ΔU˙2​=U˙1​−U˙2​=U2​P2​R+Q2​X​+jU2​P2​X−Q2​R​",
-      "prefix": "=P2​+jQ2​、末端电压为 U˙2​。以 U˙2​ 为参考：",
-      "suffix": "实部为纵分量 longitudinal component ΔU",
-      "pos": 916,
-      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
-      "pageTitle": "第6讲 简单电力系统潮流计算",
-      "color": "green",
-      "note": "复功率定义 $\\dot S=\\dot U\\dot I^*$，所以\n\n$$\\dot I=\\frac{\\dot S_2^*}{\\dot U_2^*}=\\frac{P_2-jQ_2}{U_2}$$\n这一步用到了 $\\dot U_2$ 是实数这个设定。$\\dot U_2$ 是参考方向，认为是实数。",
-      "id": "mvornmudmqkm",
-      "created": 1792989503077,
-      "updated": 1792989550230
     }
   ],
   "deleted": [
@@ -168,6 +155,10 @@
     {
       "id": "mvorlskj957g",
       "at": 1792989498450
+    },
+    {
+      "id": "mvornmudmqkm",
+      "at": 1792989565831
     }
   ]
 }
