@@ -1,20 +1,6 @@
 {
   "version": 1,
-  "annotations": [
-    {
-      "quote": "任意时刻、任意位置的功率平衡",
-      "prefix": " analysis： 边界条件由复电流变为复功率；基本物理依据是",
-      "suffix": "。潮流方程是非线性方程，需要数值方法和专门算法。结果不只是电流，",
-      "pos": 634,
-      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
-      "pageTitle": "第6讲 简单电力系统潮流计算",
-      "color": "yellow",
-      "note": "",
-      "id": "mvontgfmb5vf",
-      "created": 1792983056242,
-      "updated": 1792983056242
-    }
-  ],
+  "annotations": [],
   "deleted": [
     {
       "id": "mvknxi7v35k6",
@@ -135,6 +121,10 @@
     {
       "id": "mvont1iq8yql",
       "at": 1792983050332
+    },
+    {
+      "id": "mvontgfmb5vf",
+      "at": 1792983071872
     }
   ]
 }
