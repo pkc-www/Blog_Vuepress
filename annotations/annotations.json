@@ -22,10 +22,10 @@
       "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
       "pageTitle": "第6讲 简单电力系统潮流计算",
       "color": "green",
-      "note": "",
+      "note": "$\\dot U_2$ 是参考方向，认为是实数。",
       "id": "mvornmudmqkm",
       "created": 1792989503077,
-      "updated": 1792989503077
+      "updated": 1792989528961
     }
   ],
   "deleted": [
