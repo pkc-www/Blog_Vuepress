@@ -39,6 +39,19 @@
       "id": "mvorsjmt6nm4",
       "created": 1792989732197,
       "updated": 1792989732197
+    },
+    {
+      "quote": "S˙ 和 U˙ 必须取元件同一侧的值",
+      "prefix": "有关，通常写作δ2​=−arctanU1​−ΔU1​δU1​​。",
+      "suffix": "。三相量配线电压、单相量配相电压、标幺量配标幺电压，计算结果分别",
+      "pos": 1161,
+      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
+      "pageTitle": "第6讲 简单电力系统潮流计算",
+      "color": "yellow",
+      "note": "",
+      "id": "mvortw2dte6v",
+      "created": 1792989794965,
+      "updated": 1792989794965
     }
   ],
   "deleted": [
