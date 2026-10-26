@@ -65,6 +65,19 @@
       "id": "mvoruszdoyvc",
       "created": 1792989837625,
       "updated": 1792989924010
+    },
+    {
+      "quote": "高压输电网络 X≫R，有：ΔU2​≈U2​Q2​X​,δU2​≈U2​P2​X​",
+      "prefix": "Voltage offset：UN​U1​−UN​​×100%。",
+      "suffix": "电压幅值差主要由无功传输决定：V-Q 强耦合，V-P 弱耦合；无",
+      "pos": 1547,
+      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
+      "pageTitle": "第6讲 简单电力系统潮流计算",
+      "color": "yellow",
+      "note": "",
+      "id": "mvorxtfzg1k8",
+      "created": 1792989978191,
+      "updated": 1792989978191
     }
   ],
   "deleted": [
