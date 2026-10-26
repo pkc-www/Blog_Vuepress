@@ -26,19 +26,6 @@
       "id": "mvorp89opf1k",
       "created": 1792989577500,
       "updated": 1792989647596
-    },
-    {
-      "quote": "相角：δ1​=arctanU2​+ΔU2​δU2​​",
-      "prefix": "部为横分量 transverse component δU2​。",
-      "suffix": "。若已知首端功率和电压 S˙1​,U˙1​，以 U˙1​ 为参考",
-      "pos": 1028,
-      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
-      "pageTitle": "第6讲 简单电力系统潮流计算",
-      "color": "yellow",
-      "note": "",
-      "id": "mvorry5jihul",
-      "created": 1792989704359,
-      "updated": 1792989704359
     }
   ],
   "deleted": [
@@ -185,6 +172,10 @@
     {
       "id": "mvornmudmqkm",
       "at": 1792989565831
+    },
+    {
+      "id": "mvorry5jihul",
+      "at": 1792989711385
     }
   ]
 }
