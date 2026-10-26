@@ -22,10 +22,10 @@
       "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
       "pageTitle": "第6讲 简单电力系统潮流计算",
       "color": "green",
-      "note": "",
+      "note": "\\(d\\dot U_2 = \\dot U_1 - \\dot U_2 = \\dot I\\,(R+jX)\\)\n\\(\\dot S_2 = \\dot U_2\\,\\dot I^* \\quad\\Longrightarrow\\quad \\dot I^* = \\frac{P_2+jQ_2}{\\dot U_2}\\)\n\\(\\dot I = \\frac{P_2 - jQ_2}{\\dot U_2^{\\,*}}\\)",
       "id": "mvorfoo19229",
       "created": 1792989132193,
-      "updated": 1792989132193
+      "updated": 1792989169783
     }
   ],
   "deleted": [
