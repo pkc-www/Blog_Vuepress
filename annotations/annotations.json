@@ -13,19 +13,6 @@
       "id": "mvonu0fdsqba",
       "created": 1792983082153,
       "updated": 1792983082153
-    },
-    {
-      "quote": "ΔU˙1​=U1​P1​R+Q1​X​+jU1​P1​X−Q1​R​",
-      "prefix": "若已知首端功率和电压 S˙1​,U˙1​，以 U˙1​ 为参考：",
-      "suffix": "相角方向与参考端有关，通常写作δ2​=−arctanU1​−ΔU",
-      "pos": 1087,
-      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
-      "pageTitle": "第6讲 简单电力系统潮流计算",
-      "color": "green",
-      "note": "",
-      "id": "mvorlskj957g",
-      "created": 1792989417187,
-      "updated": 1792989417187
     }
   ],
   "deleted": [
@@ -164,6 +151,10 @@
     {
       "id": "mvorgxcrjt8p",
       "at": 1792989285928
+    },
+    {
+      "id": "mvorlskj957g",
+      "at": 1792989498450
     }
   ]
 }
