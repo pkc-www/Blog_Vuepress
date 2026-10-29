@@ -78,6 +78,19 @@
       "id": "mvorxtfzg1k8",
       "created": 1792989978191,
       "updated": 1792989978191
+    },
+    {
+      "quote": "令 U˙j​=1、其余节点电压全为 0（即其余节点全部短路接地），则​Y1j​⋮Ynj​​​=Yn​ej​⟹Yij​=U˙j​I˙i​​​U˙k​=0, k=j​",
+      "prefix": "−y23​​−y13​−y23​y30​+y13​+y23​​​",
+      "suffix": "Yjj​：在节点 j 加单位电压、其余节点短路时，从节点 j 注",
+      "pos": 1801,
+      "page": "/post/电力系统分析/第7讲-网络方程网络矩阵与功率方程.html",
+      "pageTitle": "第7讲 网络方程、网络矩阵与功率方程",
+      "color": "yellow",
+      "note": "",
+      "id": "mvssup2438n1",
+      "created": 1793233376860,
+      "updated": 1793233376860
     }
   ],
   "deleted": [
