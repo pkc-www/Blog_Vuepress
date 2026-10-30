@@ -2,9 +2,10 @@
 title: 电力电子进阶
 icon: book
 article: false
+hue: 150
 dir:
   link: true
-  order: 7
+  order: 8
 ---
 
 从 Buck/Boost 出发，一步步走到双有源桥（DAB）、直流变压器和固态变压器（SST），最终面向 AI 数据中心（AIDC）的中压直流供电。笔记配有可运行的 MATLAB 仿真。
