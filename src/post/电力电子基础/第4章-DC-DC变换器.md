@@ -32,7 +32,7 @@ PWM is the usual choice: with a fixed $f_s$ the harmonics sit at known frequenci
 
 **Commutation**:
 
-![Basic unit of a PWM circuit](./图片/ch4-pwm-leg.png)
+![Basic unit of a PWM circuit =250x](./图片/ch4-pwm-leg.png)
 
 A controllable switch and a diode form one leg. Whichever way the current $i_A$ flows, either a switch or the diode of the same position carries it, so $v_{AN}$ is set only by the switching state:
 
@@ -43,15 +43,14 @@ All the converters below are built from this unit.
 
 ## 1. Buck Regulators
 
-![Buck converter: switch, diode and a low-pass filter](./图片/ch4-buck-circuit.png)
+![Buck converter: switch, diode and a low-pass filter =300x](./图片/ch4-buck-circuit.png) ![Mode 1 (switch on) and Mode 2 (switch off) =220x](./图片/ch4-buck-modes.png)
 
-![Mode 1 (switch on) and Mode 2 (switch off)](./图片/ch4-buck-modes.png)
-
-**Assumptions**:
-
-1. Steady state: $I_C = 0$, $I_L = I_o$, $V_L = 0$ over a cycle (averages);
-2. Continuous conduction: $i_L$ stays positive and continuous;
-3. Large $C$: $V_C = \text{const}$.
+> [!NOTE]
+> **Assumptions**:
+>
+> 1. Steady state: $I_C = 0$, $I_L = I_o$, $V_L = 0$ over a cycle (averages);
+> 2. Continuous conduction: $i_L$ stays positive and continuous;
+> 3. Large $C$: $V_C = \text{const}$.
 
 The inductor current rises by $\Delta I_L$ while on and falls by the same amount while off:
 
@@ -62,7 +61,7 @@ V_d - V_o = L\dfrac{\Delta I_L}{t_{on}} \\[2mm]
 \end{cases}
 $$
 
-![vL and iL waveforms: areas A and B are equal](./图片/ch4-buck-vl-il.png)
+![vL and iL waveforms: areas A and B are equal =330x](./图片/ch4-buck-vl-il.png)
 
 Together with the power balance $V_d I_d = V_o I_o$:
 
@@ -76,7 +75,7 @@ $$
 
 ### Output Voltage Ripple
 
-![The ripple of iL charges the capacitor, giving ΔQ and ΔVo](./图片/ch4-buck-ripple.png)
+![The ripple of iL charges the capacitor, giving ΔQ and ΔVo =360x](./图片/ch4-buck-ripple.png)
 
 The ripple current of $i_L$ flows into $C$. The charge $\Delta Q$ is the triangle above $I_o$ over $T_s/2$:
 
@@ -94,7 +93,7 @@ so choosing $f_c \ll f_s$ keeps the ripple small.
 
 ### Discontinuous Conduction
 
-![Discontinuous-conduction waveforms of the buck converter](./图片/ch4-buck-dcm.png)
+![Discontinuous-conduction waveforms of the buck converter =360x](./图片/ch4-buck-dcm.png)
 
 At light load $i_L$ falls to zero before the end of the period. **Boundary** between continuous and discontinuous conduction:
 
@@ -115,7 +114,8 @@ I_o = \frac{1}{2} i_{L,peak}(D + \Delta_1), \quad i_{L,peak} = \frac{V_o \Delta_
 \;\Rightarrow\; \boxed{\Delta_1 = \frac{2 f_s L}{V_d D} I_o}
 $$
 
-In DCM the output voltage depends on the load current, not on $D$ alone.
+> [!TIP]
+> In DCM the output voltage depends on the load current, not on $D$ alone, so the control loop must work harder at light load.
 
 **Conclusion of Buck**:
 
@@ -127,9 +127,7 @@ The input current is pulsating, so an input filter is usually needed.
 
 ## 2. Boost Regulators
 
-![Boost converter](./图片/ch4-boost-circuit.png)
-
-![Mode 1 (switch on) and Mode 2 (switch off)](./图片/ch4-boost-modes.png)
+![Boost converter =300x](./图片/ch4-boost-circuit.png) ![Mode 1 (switch on) and Mode 2 (switch off) =220x](./图片/ch4-boost-modes.png)
 
 $$
 \begin{cases}
@@ -138,7 +136,7 @@ V_d - V_o = -L\dfrac{\Delta I_L}{t_{off}}
 \end{cases}
 $$
 
-![vL and iL waveforms](./图片/ch4-boost-vl-il.png)
+![vL and iL waveforms =320x](./图片/ch4-boost-vl-il.png)
 
 The average $V_L = 0$, so:
 
@@ -160,7 +158,7 @@ $$
 
 ### Output Voltage Ripple
 
-![Diode current and the output voltage ripple](./图片/ch4-boost-ripple.png)
+![Diode current and the output voltage ripple =380x](./图片/ch4-boost-ripple.png)
 
 While the switch is on, the capacitor alone supplies $I_o$ for $DT_s$:
 
@@ -171,7 +169,7 @@ $$
 
 ### Discontinuous Conduction
 
-![Discontinuous-conduction waveforms of the boost converter](./图片/ch4-boost-dcm.png)
+![Discontinuous-conduction waveforms of the boost converter =340x](./图片/ch4-boost-dcm.png)
 
 **Boundary**:
 
@@ -187,7 +185,8 @@ $$
 \boxed{\frac{V_o}{V_d} = \frac{D + \Delta_1}{\Delta_1}, \qquad \Delta_1 = \frac{2 f_s L}{V_d D} I_o}
 $$
 
-At light load $\Delta_1 \to 0$ and $V_o$ rises sharply, so a boost converter must never run without load unless the duty ratio is controlled.
+> [!WARNING]
+> At light load $\Delta_1 \to 0$ and $V_o$ rises sharply, so a boost converter must **never run without load** unless the duty ratio is controlled: the output capacitor can be overcharged and destroyed.
 
 ## 3. Buck-Boost Regulators
 
@@ -197,7 +196,7 @@ At light load $\Delta_1 \to 0$ and $V_o$ rises sharply, so a boost converter mus
 
 Merging the two stages and removing the redundant middle capacitor and switch leaves a single inductor that is charged from $V_d$ when on and discharged into the output when off. The output polarity is **reversed**.
 
-![Mode 1 (on): like a boost; Mode 2 (off): like a buck](./图片/ch4-buckboost-modes.png)
+![Mode 1 (on): like a boost; Mode 2 (off): like a buck =230x](./图片/ch4-buckboost-modes.png)
 
 **CCM**: volt-second balance $V_d D = V_o(1 - D)$:
 
@@ -241,9 +240,10 @@ $$
 
 ![Deriving the Ćuk converter by cascading a boost and a buck converter](./图片/ch4-cuk-derivation.png)
 
-**Caution!** After the middle stage is replaced by the coupling capacitor $C_1$, the output capacitor and the load voltage are **reversed**.
+> [!CAUTION]
+> After the middle stage is replaced by the coupling capacitor $C_1$, the output capacitor and the load voltage are **reversed**.
 
-![Ćuk converter and its two modes](./图片/ch4-cuk-circuit.png)
+![Ćuk converter and its two modes =460x](./图片/ch4-cuk-circuit.png)
 
 Energy is transferred from the input to the output through $C_1$. In steady state with large capacitors:
 
@@ -264,7 +264,19 @@ $$
 \boxed{\frac{V_o}{V_d} = \frac{D}{1 - D}}
 $$
 
-This is the same ratio as the buck-boost (also inverted). Inductors on both sides make both the **input and the output current continuous** with small ripple. The drawback is that $C_1$ carries a large ripple current.
+This is the same ratio as the buck-boost (also inverted).
+
+ Inductors on both sides make both the **input and the output current continuous** with small ripple. The drawback is that $C_1$ carries a large ripple current.
+
+> [!TIP]
+> **Summary of CCM voltage ratios**
+>
+> | Converter | $V_o / V_d$ | $\Delta I_L$ | $\Delta V_o$ |
+> | --- | --- | --- | --- |
+> | Buck | $D$ | $\dfrac{V_d D(1-D)}{f_s L}$ | $\dfrac{V_d D(1-D)}{8LCf_s^2}$ |
+> | Boost | $\dfrac{1}{1-D}$ | $\dfrac{V_d D}{f_s L}$ | $\dfrac{I_o D}{f_s C}$ |
+> | Buck-Boost | $-\dfrac{D}{1-D}$ | $\dfrac{V_d D}{f_s L}$ | $\dfrac{I_o D}{f_s C}$ |
+> | Ćuk | $-\dfrac{D}{1-D}$ | — | — |
 
 ## 5. Full-bridge Regulator
 
@@ -288,7 +300,7 @@ This is the same ratio as the buck-boost (also inverted). Inductors on both side
 
 ### PWM with Bipolar Voltage Switching
 
-![PWM with bipolar voltage switching](./图片/ch4-bipolar-pwm.png)
+![PWM with bipolar voltage switching =360x](./图片/ch4-bipolar-pwm.png)
 
 $v_{tri}$ is compared with $v_{control}$:
 
@@ -311,4 +323,5 @@ The two legs are controlled separately: leg A compares $v_{control}$ with $v_{tr
 ![Bipolar vs. unipolar PWM output voltage for the same vcontrol](./图片/ch4-pwm-bipolar-unipolar.png)
 
 - The average $V_o = \dfrac{V_d}{\hat{V}_{tri}}\, v_{control}$ is the same as for bipolar switching;
-- The voltage steps are only $V_d$ instead of $2V_d$, and the effective switching frequency of $v_o$ is **doubled**, so the output ripple is much smaller.
+> [!TIP]
+> With unipolar switching the voltage steps are only $V_d$ instead of $2V_d$, and the effective switching frequency of $v_o$ is **doubled**, so the output ripple is much smaller for the same device switching frequency.
