@@ -3,38 +3,38 @@
 
 $ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
 
-/* ---------- 阅读进度条：贴在导航栏下沿 ---------- */
+/* ---------- 阅读进度条：3px 实色主色，压在导航栏底线上 ---------- */
+// 进度条挂在 body 上，拿不到 #app 里手机端的 --navbar-height，所以窄屏单独用 --navbar-mobile-height
 .mo-progress {
   position: fixed;
-  top: var(--navbar-height, 3.75rem);
+  top: calc(var(--navbar-height, 4rem) - 2px);
   left: 0;
   z-index: 200;
   width: 100%;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--vp-c-accent) 30%, transparent),
-    var(--vp-c-accent)
-  );
+  height: 3px;
+  background: var(--vp-c-accent);
   transform: scaleX(0);
   transform-origin: left;
   pointer-events: none;
+
+  @media (max-width: 959px) {
+    top: calc(var(--navbar-mobile-height, 3.25rem) - 2px);
+  }
 }
 
-// 首页是整屏背景图，不显示进度条
-html:has(.vp-blog-home) .mo-progress {
+// 首页是整屏背景图、博文大全页是课程总览，都不显示进度条
+html:has(.vp-blog-home) .mo-progress,
+html:has(.post-index-page) .mo-progress {
   display: none;
 }
 
-/* ---------- 导航栏：页面顶部时不带阴影，滚动后浮起 ---------- */
+/* ---------- 导航栏：滚动前后都是实底 + 细线（只有首页顶部透明，见 home.scss） ---------- */
 .vp-navbar {
+  // 保留主题自带的 transform 过渡，手机端自动隐藏才有动画
   transition:
     box-shadow 0.3s ease,
-    background-color 0.3s ease;
-
-  &:not(.mo-scrolled) {
-    box-shadow: none;
-  }
+    background-color 0.3s ease,
+    transform var(--vp-t-transform);
 }
 
 /* ---------- 页面切换入场 ---------- */
@@ -133,6 +133,7 @@ html:has(.vp-blog-home) .mo-progress {
 /* ---------- 按钮类元素按下时的回弹 ---------- */
 .vp-color-mode-switch,
 .vp-repo-link,
+.vp-action-link,
 .slimsearch-button,
 .vp-pagination-button,
 .vp-blog-type-button {

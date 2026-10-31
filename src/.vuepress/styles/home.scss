@@ -1,16 +1,18 @@
 // 博客首页（layouts/HomeBlog.vue）样式；由 client.ts 引入
 // 与博文大全页同一套语言：主色墨蓝、细线、等宽编号、克制的动效
+@use "./button";
 
 $ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
 
 /* ---------- 课程辅助色：元素上设置 --h（色相），得到 --cc ---------- */
-// 浅色用较深的颜色保证对比，深色用较亮的；饱和度都压低，和墨蓝放在一起不跳
+// 浅色用较深的颜色保证对比，深色用较亮的；饱和度压得很低，只作辅助色，和墨蓝 / 沙金放在一起不跳
+// 首页课程条和博文大全共用这一组数值
 .course-hue {
-  --cc: oklch(0.55 0.11 var(--h, 250));
+  --cc: oklch(0.5 0.08 var(--h, 250));
 }
 
 html[data-theme="dark"] .course-hue {
-  --cc: oklch(0.76 0.1 var(--h, 250));
+  --cc: oklch(0.76 0.06 var(--h, 250));
 }
 
 @keyframes hb-rise {
@@ -25,21 +27,85 @@ html[data-theme="dark"] .course-hue {
   }
 }
 
+// 背景图入场：淡入并从 1.04 倍缩回原大
+@keyframes hb-bg-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// “向下”提示下方的竖线上下浮动
+@keyframes hb-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+/* ---------- 导航栏：首页顶部透明，叠在 Hero 上 ---------- */
+// 导航栏仍是 fixed，搜索和深浅色切换随时能点到；滚过 8px 后 motion.ts 加上 .mo-scrolled，
+// 回到 index.scss 的实底 + 细线（motion.scss 负责 0.3s 背景过渡）
+// 手机端展开汉堡菜单时也保持实底，免得菜单上方露出一条背景图
+html:has(.vp-blog-home) .vp-navbar:not(.mo-scrolled, :has(.vp-toggle-navbar-button.is-active)) {
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
 /* ---------- Hero：文字靠左，插画留在右侧 ---------- */
 .vp-blog-home .vp-blog-hero {
-  align-items: stretch;
-  margin-bottom: 0;
+  // 首屏高度：一般等于视口高，太矮或太高的屏幕夹在 600–860px；README 的 bgImageStyle 也用它算背景图尺寸
+  --hb-h: clamp(600px, 100svh, 860px);
 
-  // 主题默认是一层灰色蒙版；换成左侧压暗 + 底部渐隐到页面底色
+  align-items: stretch;
+  // 往上顶进导航栏底下，padding 再补回同样的高度，透明导航栏就叠在背景图上
+  margin-top: calc(-1 * var(--navbar-height));
+  margin-bottom: 0;
+  padding-top: var(--navbar-height);
+
+  // heroFullScreen：不再用主题的 100vh - 导航栏高，改成最小高度 + 上下留白
+  // 向下按钮仍按 innerHeight - 导航栏高滚动，首屏不超过一屏高时正好停在首屏下沿
+  &.hero-fullscreen {
+    box-sizing: border-box;
+    height: auto;
+    min-height: var(--hb-h);
+    padding: calc(96px + var(--navbar-height)) 0 120px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  // 背景图入场；蒙版 ::after 跟着一起缩放，看不出差别
+  .vp-blog-mask {
+    animation: hb-bg-in 1.4s $ease-out both;
+  }
+
+  // 主题默认是一层灰色蒙版；换成左侧压浅 + 底部渐隐到页面底色
   .vp-blog-mask::after {
     background:
       linear-gradient(
         90deg,
-        color-mix(in srgb, var(--vp-c-bg) 92%, transparent) 0%,
-        color-mix(in srgb, var(--vp-c-bg) 70%, transparent) 38%,
-        transparent 68%
+        color-mix(in srgb, var(--vp-c-bg) 88%, transparent) 0%,
+        color-mix(in srgb, var(--vp-c-bg) 62%, transparent) 26%,
+        transparent 46%
       ),
-      linear-gradient(180deg, transparent 70%, var(--vp-c-bg) 100%);
+      linear-gradient(180deg, transparent 74%, var(--vp-c-bg) 100%);
+  }
+
+  // 浅色背景图用 multiply 叠在页面底色上，图里的白底融进 #fcfbf8
+  // 主题的行内 background 简写会把底色清成透明，所以底色要 !important
+  .vp-blog-mask.light {
+    background-color: var(--vp-c-bg) !important;
+    background-blend-mode: multiply;
   }
 
   // 深色背景图自带纯黑底，用 lighten 混合把黑色抬到页面底色，避免出现一块更黑的矩形
@@ -57,11 +123,16 @@ html[data-theme="dark"] .course-hue {
 .hb-hero {
   box-sizing: border-box;
   width: 100%;
-  max-width: 1160px;
-  margin: 0 auto;
-  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(24px, 7vw, 128px);
   color: var(--vp-c-text);
   text-align: start;
+}
+
+// 文字列推到最左侧，最宽 440px；头像、眉题、标题、引文、按钮依次上升入场
+.hb-col {
+  max-width: 440px;
 
   > * {
     animation: hb-rise 0.8s $ease-out both;
@@ -74,60 +145,97 @@ html[data-theme="dark"] .course-hue {
   }
 }
 
-.hb-avatar {
+// 头像 64px + 细描边环
+// 选择器要强过 index.scss 的 img[src*="ava"]（它用 !important 去掉了 box-shadow）
+.vp-blog-hero img.hb-avatar {
   display: block;
-  width: 88px;
-  height: 88px;
-  margin: 0 0 1.75rem !important;
+  width: 64px;
+  height: 64px;
+  margin: 0 0 36px !important;
   border-radius: 50% !important;
   object-fit: cover;
   box-shadow:
     0 0 0 3px var(--vp-c-bg),
-    0 0 0 4px color-mix(in srgb, var(--vp-c-accent) 60%, transparent),
-    0 12px 32px -8px rgb(0 0 0 / 35%) !important;
+    0 0 0 4px var(--line-strong) !important;
 }
 
+// 眉题：40px 短横线 + 等宽大写小字
 .hb-eyebrow {
-  margin: 0 0 0.75rem;
-  background: linear-gradient(90deg, var(--vp-c-accent), oklch(0.65 0.13 300) 60%, oklch(0.7 0.1 185));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 14px;
+  align-items: center;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--vp-font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
 }
 
-.hb-title {
-  margin: 0;
-  color: var(--vp-c-text);
-  font-size: clamp(2.6rem, 6vw, 4.4rem);
-  font-weight: 750;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+.hb-eyebrow-rule {
+  display: inline-block;
+  width: 40px;
+  height: 1.5px;
+  background: var(--ink);
 }
 
+html[data-theme="dark"] .hb-eyebrow-rule {
+  background: var(--vp-c-text-mute);
+}
+
+// 大标题“Notes / for EE”：Noto Serif Display 压窄到 62.5%，“for”是斜体小字，“EE”用主色
+.hb-title {
+  margin: 18px 0 0;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(60px, 8vw, 120px);
+  font-stretch: 62.5%;
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+
+  .hb-t1,
+  .hb-t2 {
+    display: block;
+  }
+
+  i {
+    margin-inline-end: 0.14em;
+    font-size: 0.4em;
+    font-stretch: 100%;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0;
+    vertical-align: 0.6em;
+  }
+}
+
+.hb-t-acc {
+  color: var(--vp-c-accent);
+}
+
+// 引文：3px 粗竖线 + 更大字号
 .hb-quote {
-  max-width: 30em;
-  margin: 1.5rem 0 0;
-  padding: 0 0 0 1rem;
-  border-inline-start: 2px solid var(--vp-c-accent);
+  max-width: 24em;
+  margin: 40px 0 0;
+  padding: 0 0 0 18px;
+  border-inline-start: 3px solid var(--rule);
 
   p {
     margin: 0;
     color: var(--vp-c-text);
-    font-size: clamp(1rem, 1.6vw, 1.15rem);
-    line-height: 1.8;
-    letter-spacing: 0.04em;
-    opacity: 0.88;
+    font-size: clamp(18px, 1.9vw, 22px);
+    line-height: 1.75;
+    letter-spacing: 0.08em;
   }
 
   cite {
     display: block;
-    margin-top: 0.35rem;
-    color: var(--vp-c-text-mute);
-    font-size: 0.85rem;
+    margin-top: 8px;
+    color: var(--vp-c-text);
+    font-size: 14px;
     font-style: normal;
     letter-spacing: 0.06em;
   }
@@ -136,75 +244,111 @@ html[data-theme="dark"] .course-hue {
 .hb-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 2.25rem;
+  gap: 12px;
+  margin-top: 48px;
 }
 
+// 套用全站通用按钮（_button.scss）：直角实色主按钮 / 描边次按钮，不再上浮、不带彩色阴影
 .hb-btn {
-  display: inline-flex;
-  gap: 0.4em;
-  align-items: center;
-  padding: 0.65rem 1.35rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition:
-    transform 0.25s $ease-out,
-    box-shadow 0.25s ease,
-    background-color 0.25s ease,
-    border-color 0.25s ease;
+  @include button.base;
 
   svg {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     fill: none;
     stroke: currentcolor;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-width: 1.7;
-    transition: transform 0.25s ease;
-  }
-
-  &:hover {
-    transform: translateY(-2px);
-
-    svg {
-      transform: translateX(3px);
-    }
-  }
-
-  &:active {
-    transform: translateY(0) scale(0.97);
+    stroke-width: 1.8;
   }
 }
 
 .hb-btn-primary {
-  background: linear-gradient(120deg, var(--vp-c-accent), color-mix(in oklch, var(--vp-c-accent), oklch(0.6 0.13 300) 45%));
-  color: #fff !important;
-  box-shadow: 0 8px 22px -10px var(--vp-c-accent);
-
-  &:hover {
-    box-shadow: 0 12px 28px -10px var(--vp-c-accent);
-  }
+  @include button.primary;
 }
 
 .hb-btn-ghost {
-  border-color: color-mix(in srgb, var(--vp-c-text) 22%, transparent);
-  background: color-mix(in srgb, var(--vp-c-bg) 55%, transparent);
+  @include button.ghost;
+}
+
+/* ---------- 底部“向下”提示：沿用主题的按钮，点击滚动仍由 BlogHero.js 计算 ---------- */
+// 隐藏主题的双箭头和 bounce 动画，换成“向下”两字 + 一根上下浮动的竖线
+// motion.scss 给这个按钮加了 transform 入场动画，所以不用 translateX(-50%) 居中，改为左右贴 0 + margin auto
+.vp-blog-home .vp-blog-hero.hero-fullscreen .vp-hero-slide-down-button {
+  position: absolute;
+  inset: auto 0 20px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: max-content;
+  min-width: 44px;
+  height: auto;
+  min-height: 44px;
+  margin: 0 auto;
+  padding: 4px 8px;
   color: var(--vp-c-text);
-  backdrop-filter: blur(8px);
+  font-family: var(--vp-font);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  // 抵掉最后一个字后面的字距，文字和竖线才对齐
+  &::before {
+    content: "向下";
+    margin-inline-end: -0.2em;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    width: 1.5px;
+    height: 40px;
+    background: var(--vp-c-text-mute);
+    animation: hb-bob 2.4s ease-in-out 1.4s infinite;
+  }
+
+  .slide-down-icon {
+    display: none;
+    animation: none;
+  }
 
   &:hover {
-    border-color: var(--vp-c-accent);
     color: var(--vp-c-accent);
   }
 }
 
+/* ---------- 首屏下方版心：1160 宽，主栏与侧栏间距 96px ---------- */
+// 分类 / 标签页也用 .blog-page-wrapper，所以只在 .vp-blog-home 下改
+// 底部留 96px 给分页和欢迎语之间，欢迎语自己再留 140px（见文末）
+.vp-page.vp-blog-home {
+  .blog-page-wrapper {
+    box-sizing: border-box;
+    gap: 96px;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 120px clamp(20px, 4vw, 40px) 96px;
+  }
+
+  .vp-blog-main {
+    flex: 999 1 560px;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+  }
+
+  // 吸顶（position: sticky）和平板宽度隐藏都沿用主题
+  .vp-blog-info-wrapper {
+    flex: 0 1 300px;
+    margin: 0;
+  }
+}
+
 /* ---------- 按课程浏览 ---------- */
+// 这一段在分类 / 标签 / 时间轴页面的同一插槽里也会渲染，那里保持原样；首页的新样式写在下方 .vp-blog-home 里
 .hb-courses {
   margin-bottom: 0.5rem;
 }
@@ -224,6 +368,11 @@ html[data-theme="dark"] .course-hue {
     letter-spacing: 0.18em;
     color: var(--vp-c-text-mute);
   }
+}
+
+// §编号只在首页显示
+.hb-sec-no {
+  display: none;
 }
 
 .hb-section-latest {
@@ -312,99 +461,306 @@ html[data-theme="dark"] .course-hue {
   font-size: 0.78rem;
 }
 
-/* ---------- 文章列表 ---------- */
+/* ---------- 首页：分区标题与课程网格 ---------- */
 .vp-blog-home {
-  .vp-article-wrapper {
-    margin-bottom: 0.9rem;
-  }
+  // 分区标题：§编号 + 标题 + 上方 1px 细线
+  .hb-section-head {
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    justify-content: flex-start;
+    margin: 0 0 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--vp-c-divider);
 
-  .vp-article-item {
-    position: relative;
-    padding: 1.25rem 1.5rem;
-    border-radius: 14px;
-    background: var(--vp-c-bg-elv);
-    overflow: hidden;
-
-    // 悬停时左侧出现主色细条
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 3px;
-      background: var(--vp-c-accent);
-      transform: scaleY(0);
-      transform-origin: top;
-      transition: transform 0.35s $ease-out;
-    }
-
-    &:hover::before {
-      transform: scaleY(1);
+    h2 {
+      color: var(--ink);
+      font-family: var(--vp-font);
+      font-size: clamp(24px, 2.4vw, 30px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0.06em;
     }
   }
 
-  .vp-article-title {
-    font-size: 1.15rem;
-    font-weight: 650;
-    letter-spacing: 0.02em;
-    transition: color 0.2s ease;
+  .hb-sec-no {
+    display: inline;
+    color: var(--vp-c-text-mute);
+    font-family: var(--vp-font-mono);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+
+  .hb-more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-inline-start: auto;
+    font-size: 15px;
 
     &:hover {
-      color: var(--vp-c-accent);
+      opacity: 1;
+      text-decoration: underline;
     }
   }
 
-  .vp-article-excerpt {
-    color: var(--vp-c-text-mute);
-    font-size: 0.92rem;
-    line-height: 1.75;
+  // 锚点跳转时让出固定导航栏的高度
+  .hb-courses,
+  .hb-section-latest {
+    scroll-margin-top: calc(var(--navbar-height) + 16px);
   }
 
-  .vp-article-hr {
-    border-top-style: dashed;
-    opacity: 0.7;
+  .hb-courses {
+    margin-bottom: 0;
   }
 
-  .page-info {
-    font-size: 0.8rem;
+  .hb-section-latest {
+    margin-top: 128px;
   }
 
-  // 分类、标签统一成主色浅底，不用主题的彩色
-  .page-category-item,
-  .page-tag-item {
-    background: color-mix(in srgb, var(--vp-c-accent) 10%, transparent) !important;
-    color: var(--vp-c-accent) !important;
+  // 课程条改为开放网格：顶部 28px 短色条 + 空心等宽编号；auto-fill 在 7 门课时最后一行会留空位，与设计稿一致
+  .hb-course-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 44px 32px;
   }
 
-  // 分页
-  .vp-pagination-list .vp-pagination-number > div,
-  .vp-pagination-button {
-    border-radius: 8px;
+  .hb-course {
+    gap: 8px;
+    padding: 18px 0 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    overflow: visible;
+    transition: color 0.25s ease;
+
+    &::before {
+      inset: 0 auto auto 0;
+      width: 28px;
+      height: 2px;
+      opacity: 1;
+    }
+
+    // 悬停不再上浮，空心编号填成课程色
+    &:hover {
+      transform: none;
+      box-shadow: none;
+      color: var(--ink) !important;
+
+      .hb-course-no {
+        color: var(--cc);
+        -webkit-text-stroke-color: var(--cc);
+      }
+    }
   }
 
-  // 底部欢迎语
-  > [vp-content] {
-    color: var(--vp-c-text-mute);
-    font-size: 0.9rem;
-    text-align: center;
+  .hb-course-no {
+    color: transparent;
+    font-family: var(--vp-font-mono);
+    font-size: 34px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 200;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    -webkit-text-stroke: 1px var(--ink);
+    transition:
+      color 0.25s ease,
+      -webkit-text-stroke-color 0.25s ease;
+  }
+
+  .hb-course-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  .hb-course-count {
+    font-size: 13px;
   }
 }
 
-/* ---------- 右侧博主卡片 ---------- */
-.vp-blog-home .vp-blog-info-wrapper {
-  .vp-blogger-info,
-  .vp-blog-infos {
-    border: 1px solid var(--vp-c-divider);
-    border-radius: 14px;
-    background: var(--vp-c-bg-elv);
-    box-shadow: none;
+// 深色下描边用 line-strong，墨色描边太亮
+html[data-theme="dark"] .vp-blog-home .hb-course-no {
+  -webkit-text-stroke-color: var(--line-strong);
+}
+
+/* ---------- 文章列表：去卡片化，只留标题、简介和底部细线 ---------- */
+// 整卡点击跳转（ArticleItem.js）和 motion.ts 的滚动渐显都保留；全站卡片样式留给分类 / 标签页
+.vp-blog-home {
+  .vp-article-wrapper {
+    margin: 0;
   }
 
-  .vp-blogger-avatar {
+  .vp-article-item {
+    padding: 36px 0;
+    border: 0;
+    border-bottom: 1px solid var(--vp-c-divider);
+    border-radius: 0;
+    background: none;
+    box-shadow: none !important;
+
+    // 只去掉 index.scss 的悬停上浮；常态不写 transform，免得盖掉滚动渐显的位移
+    &:hover {
+      transform: none;
+    }
+  }
+
+  // 标题：墨色粗体；悬停整条时变主色 + 2px 下划线（不用主题的 ::after 横条）
+  .vp-article-title {
+    color: var(--ink);
+    font-family: var(--vp-font);
+    font-size: clamp(19px, 1.8vw, 22px);
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: 0.02em;
+    text-decoration: underline transparent;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    transition:
+      color 0.2s ease,
+      text-decoration-color 0.2s ease;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .vp-article-wrapper:hover .vp-article-title {
+    color: var(--vp-c-accent);
+    text-decoration-color: currentcolor;
+  }
+
+  .vp-article-excerpt {
+    max-width: 36em;
+    margin-top: 12px;
+    color: var(--vp-c-text-mute);
+    font-size: 15px;
+    line-height: 1.85;
+
+    p {
+      margin: 0;
+      line-height: inherit;
+    }
+
+    p + p {
+      margin-top: 0.5em;
+    }
+  }
+
+  .vp-article-hr {
+    display: none;
+  }
+
+  // 文章信息行（HomeBlog.vue 的 #articleInfo 插槽）：等宽日期 · 课程色点
+  .hb-article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    align-items: center;
+    margin-top: 16px;
+    color: var(--vp-c-text-mute);
+    font-size: 13px;
+    cursor: default;
+  }
+
+  .hb-article-date {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentcolor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+
+    time {
+      font-family: var(--vp-font-mono);
+      font-size: 13px;
+    }
+  }
+
+  .hb-article-course {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--vp-c-text-mute);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--ink);
+    }
+  }
+
+  .hb-dot {
+    flex: 0 0 8px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
+    background: var(--cc);
+  }
+
+  // 分页：数字、跳页输入框的样式见 index.scss §13，首页只拉开与列表的距离并居中
+  .vp-pagination {
+    margin-top: 56px;
+  }
+
+  .vp-pagination-list {
+    gap: 8px 24px;
+    justify-content: center;
+  }
+
+  // 底部欢迎语：居中小字，下方留白到页脚（多加 .vp-page 压过主题给 [vp-content] 的版心 padding）
+  &.vp-page > [vp-content] {
+    box-sizing: border-box;
+    padding: 0 clamp(20px, 4vw, 40px) 140px;
+    color: var(--vp-c-text-mute);
+    font-size: 15px;
+    line-height: 1.8;
+    text-align: center;
+
+    p:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+/* ---------- 右侧博主卡片：细线方框，社交链接、计数放到底部 ---------- */
+// 主题的 .vp-page .vp-blog-info-wrapper .vp-blogger-info 优先级是 0,3,0，这里多加一层 .vp-blog-home 压过它
+.vp-page.vp-blog-home .vp-blog-info-wrapper {
+  .vp-blogger-info {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin: 0 0 40px;
+    padding: 36px 28px 28px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: var(--r);
+    background: transparent;
+    box-shadow: none !important;
+    text-align: center;
+  }
+
+  .vp-blogger {
+    order: 1;
+    padding: 0;
+  }
+
+  // 头像 96px + 细描边环；选择器要强过 index.scss 的 img[src*="ava"]（它用 !important 去掉了阴影、改了过渡）
+  img.vp-blogger-avatar {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto;
+    border-radius: 50%;
+    object-fit: cover;
     box-shadow:
-      0 0 0 3px var(--vp-c-bg-elv),
-      0 0 0 4px color-mix(in srgb, var(--vp-c-accent) 55%, transparent);
-    transition: transform 0.4s $ease-out;
+      0 0 0 3px var(--vp-c-bg),
+      0 0 0 4px var(--line-strong) !important;
+    transition: transform 0.4s $ease-out !important;
 
     &:hover {
       transform: rotate(-4deg) scale(1.04);
@@ -412,49 +768,400 @@ html[data-theme="dark"] .course-hue {
   }
 
   .vp-blogger-name {
-    font-weight: 650;
-    letter-spacing: 0.04em;
+    margin: 18px 0 0;
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: 34px;
+    font-stretch: 62.5%;
+    font-weight: 900;
+    line-height: 1;
   }
 
   .vp-blogger-description {
+    margin: 8px 0 0;
     color: var(--vp-c-text-mute);
-    letter-spacing: 0.12em;
+    font-family: var(--vp-font-mono);
+    font-size: 12px;
+    letter-spacing: 0.2em;
   }
 
-  .vp-blog-type-button {
+  // 社交链接：44px 方形图标按钮，和导航栏的 GitHub 按钮一致
+  .vp-social-medias {
+    order: 2;
+    gap: 8px;
+    margin: 16px 0 0;
+  }
+
+  .vp-social-media {
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r);
+    background: var(--vp-c-bg);
+    color: var(--ink);
     transition:
-      transform 0.25s $ease-out,
-      background-color 0.2s ease;
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+
+    svg,
+    img {
+      width: 18px;
+      height: 18px;
+    }
 
     &:hover {
-      transform: translateY(-2px);
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--vp-c-bg);
+
+      svg {
+        transform: none;
+      }
+    }
+  }
+
+  // GitHub 图标自带深色圆底和白色图形，改成跟随文字色的单色图标
+  .github-icon {
+    circle {
+      fill: transparent;
+    }
+
+    path {
+      fill: currentcolor;
+    }
+  }
+
+  // 计数：3 列放到最下面，上方一条细线；第 4 个（时间轴）隐藏，下方信息卡的“时间轴”标签页仍能进入
+  .vp-blog-counts {
+    order: 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: auto;
+    margin: 20px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+
+  .vp-blog-count {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--vp-c-text-mute);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+
+    &:nth-child(4) {
+      display: none;
+    }
+
+    &:hover {
+      color: var(--ink);
+    }
+
+    .count {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--vp-font-mono);
+      font-size: 28px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: 0;
     }
   }
 }
 
-/* ---------- 窄屏：文字居中，蒙版加重 ---------- */
+// 深色悬停：不用亮色块，改为抬高一层底色 + 边框变亮
+html[data-theme="dark"] .vp-page.vp-blog-home .vp-blog-info-wrapper .vp-social-media:hover {
+  border-color: var(--line-strong);
+  background: var(--vp-c-bg-elv);
+  color: var(--ink);
+}
+
+/* ---------- 侧栏信息卡：图标 + 文字标签页，下划线表示选中 ---------- */
+// 方框细线见 index.scss §13；这里只排里面的内容
+.vp-page.vp-blog-home .vp-blog-info-wrapper {
+  .vp-blog-infos {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 16px 12px;
+  }
+
+  .vp-blog-type-switcher {
+    margin: 0 -16px 8px;
+    border-bottom: 1px solid var(--vp-c-divider);
+  }
+
+  // 四个标签页平分宽度；不再悬停上浮（按下回弹见 motion.scss）
+  .vp-blog-type-button {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    min-height: 56px;
+    margin: 0;
+    padding: 0;
+    color: var(--vp-c-text-mute);
+    font-family: var(--vp-font);
+    transition:
+      color 0.2s ease,
+      transform 0.15s ease;
+
+    &:hover {
+      color: var(--ink);
+    }
+
+    // 选中项：墨色粗体 + 底部 3px 主色线（主题把 .active 加在里层的图标外圈上）
+    &:has(.active) {
+      color: var(--ink);
+      font-weight: 700;
+      box-shadow: inset 0 -3px 0 var(--vp-c-accent);
+    }
+  }
+
+  // 去掉图标外的灰色圆底和选中时的主色圆底
+  .vp-blog-type-icon-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    width: auto;
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+    background: none !important;
+    color: inherit !important;
+
+    .icon {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  // 文字标签：借用 balloon 提示的 ::after（content 就是 aria-label），改成常驻显示的普通文字；去掉小三角
+  .vp-blog-type-icon-wrapper[aria-label][data-balloon-pos] {
+    &::before {
+      display: none;
+    }
+
+    &::after {
+      position: static;
+      z-index: auto;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      background: none;
+      color: inherit;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: inherit;
+      letter-spacing: 0.06em;
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  // 各面板的标题行（图标 + 总数 + 名称，点了去对应列表页）：总数改等宽细体
+  .title .num {
+    font-family: var(--vp-font-mono);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0;
+  }
+
+  // 文章：44px 单行，悬停浅底
+  .vp-star-articles {
+    margin: 8px -8px;
+  }
+
+  .vp-star-article {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: var(--r);
+    font-size: 15px;
+    transition: background-color 0.2s ease;
+
+    a {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: var(--vp-c-bg-alt);
+
+      a {
+        color: var(--ink);
+      }
+    }
+  }
+
+  // 分类：44px 行，悬停浅底，计数等宽靠右；CSS 没法按名字取课程色，色点统一用中性色
+  .vp-category-list {
+    margin: 8px -8px;
+    padding: 0;
+  }
+
+  .vp-category-item {
+    display: block;
+    margin: 0;
+  }
+
+  .vp-category {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: var(--r);
+    font-size: 15px;
+    white-space: normal;
+
+    &::before {
+      content: "";
+      flex: 0 0 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--line-strong);
+    }
+
+    &:hover {
+      background: var(--vp-c-bg-alt) !important;
+    }
+
+    .vp-category-count {
+      margin-inline-start: auto;
+      font-size: 13px;
+    }
+  }
+
+  // 标签：沿用全站描边胶囊（index.scss §12），只调间距
+  .vp-tag-list {
+    gap: 8px;
+    margin: 8px 0;
+    padding: 8px 0;
+  }
+
+  .vp-tag-item {
+    margin: 0;
+  }
+
+  // 时间轴：等宽年份 + 44px 单行
+  .timeline-content {
+    margin: 0 -8px;
+  }
+
+  .timeline-list {
+    margin: 0;
+  }
+
+  .timeline-year {
+    margin: 8px 8px 4px;
+    color: var(--vp-c-text-mute);
+    font-family: var(--vp-font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+
+  .timeline-item {
+    gap: 10px;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: var(--r);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: var(--vp-c-bg-alt);
+
+      .timeline-date,
+      .timeline-title {
+        color: var(--ink);
+      }
+    }
+  }
+
+  .timeline-date {
+    flex: 0 0 auto;
+    min-width: 0;
+    color: var(--vp-c-text-mute);
+    font-family: var(--vp-font-mono);
+    font-size: 13px;
+    line-height: inherit;
+  }
+
+  .timeline-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ---------- 窄屏：文字居中，蒙版改成上下渐变 ---------- */
 @media (max-width: 719px) {
+  // 128px 已经包含叠在上面的导航栏高度
+  .vp-blog-home .vp-blog-hero.hero-fullscreen {
+    padding: 128px 0 112px;
+  }
+
   .vp-blog-home .vp-blog-hero .vp-blog-mask::after {
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--vp-c-bg) 55%, transparent),
-        color-mix(in srgb, var(--vp-c-bg) 80%, transparent) 60%,
-        var(--vp-c-bg)
-      );
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--vp-c-bg) 72%, transparent) 0%,
+      color-mix(in srgb, var(--vp-c-bg) 88%, transparent) 45%,
+      var(--vp-c-bg) 100%
+    );
+  }
+
+  // 背景图铺满，主体偏右；README 的 bgImageStyle 是行内样式，要 !important 才盖得住
+  .vp-blog-home .vp-blog-hero .vp-blog-mask {
+    background-position: 68% center !important;
+    background-size: cover !important;
+  }
+
+  .vp-blog-home .vp-blog-hero .vp-blog-mask.dark {
+    background-position: 80% center !important;
   }
 
   .hb-hero {
     text-align: center;
   }
 
-  .hb-eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
+  .hb-col {
+    margin: 0 auto;
   }
 
-  .hb-avatar {
+  .vp-blog-hero img.hb-avatar {
     margin-inline: auto !important;
+  }
+
+  .hb-eyebrow {
+    justify-content: center;
+  }
+
+  .hb-eyebrow-rule {
+    display: none;
   }
 
   .hb-quote {

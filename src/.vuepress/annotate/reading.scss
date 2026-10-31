@@ -16,7 +16,8 @@ $column: 288px;
       --sidebar-space: calc(var(--sidebar-width) + #{$edge});
     }
 
-    // 左侧目录栏做成和「此页内容」一样的卡片：有边框、圆角，离左边缘和底部 24px，高度固定
+    // 左侧目录栏做成和「此页内容」一样的卡片：1px 细线、2px 圆角、无阴影，离左边缘和底部 24px，高度固定
+    // 固定在页面上方的卡片，用不透明的页面底色
     .vp-sidebar {
       top: calc(var(--navbar-height, 3.75rem) + 16px);
       bottom: $edge;
@@ -25,16 +26,16 @@ $column: 288px;
       width: var(--sidebar-width);
       padding: 0;
       border: 1px solid var(--vp-c-divider);
-      border-radius: 12px;
-      background: var(--vp-c-bg-elv);
-      box-shadow: 0 2px 10px rgb(0 0 0 / 5%);
+      border-radius: var(--r);
+      background: var(--vp-c-bg);
+      box-shadow: none;
       backdrop-filter: none;
       font-size: 0.94rem;
       transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 
-      // 滚动条：细、深色，不抢眼
+      // 滚动条：细、中性灰，不抢眼
       scrollbar-width: thin;
-      scrollbar-color: rgb(0 0 0 / 16%) transparent;
+      scrollbar-color: #c9c5bc transparent;
 
       &::-webkit-scrollbar {
         width: 6px;
@@ -42,7 +43,7 @@ $column: 288px;
 
       &::-webkit-scrollbar-thumb {
         border-radius: 3px;
-        background: rgb(0 0 0 / 16%);
+        background: #c9c5bc;
       }
 
       &::-webkit-scrollbar-track {
@@ -56,17 +57,55 @@ $column: 288px;
           margin-top: 0.75rem;
         }
 
-        // 第一行「博客主页」缩短，右边放收起按钮
+        // 第一行「博客主页」缩短，右边放 44px 的收起按钮：左右 margin 共 1rem + 按钮 44px + 间距 8px
         > li:first-child > .vp-sidebar-link {
-          width: calc(100% - 3.5rem);
+          width: calc(100% - 1rem - 52px);
         }
       }
 
-      // 行距放宽一些
+      // 每行至少 44px 高，方便点按；悬停浅底 + 墨色字
       .vp-sidebar-link,
       .vp-sidebar-header {
-        padding-block: 0.42rem;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        min-height: 44px;
+        padding: 8px 10px;
+        border-radius: var(--r);
         line-height: 1.55;
+      }
+
+      // 链接顶对齐：单行时用上下内边距居中，章节名折行时小方块仍对着第一行
+      .vp-sidebar-link {
+        align-items: flex-start;
+        padding-block: max(8px, calc((44px - 1lh) / 2));
+      }
+
+      .vp-sidebar-link:hover,
+      .vp-sidebar-header.clickable:hover {
+        background: var(--vp-c-bg-alt);
+        color: var(--ink);
+      }
+
+      // 当前页：主色粗体，前面一个 6px 主色小方块（不再用整行浅色底）
+      // 方块对齐第一行文字的中线，章节名折行时也不会跑到中间
+      .vp-sidebar-link.active {
+        background: transparent;
+        color: var(--vp-c-accent);
+        font-weight: 700;
+
+        &:hover {
+          background: var(--vp-c-bg-alt);
+        }
+
+        &::before {
+          content: "";
+          flex: 0 0 6px;
+          height: 6px;
+          margin-top: calc(0.775em - 3px);
+          margin-top: calc(0.5lh - 3px);
+          background: var(--vp-c-accent);
+        }
       }
     }
 
@@ -90,16 +129,15 @@ $column: 288px;
   }
 
   html[data-theme="dark"].rd-page .vp-sidebar {
-    scrollbar-color: rgb(255 255 255 / 12%) transparent;
+    scrollbar-color: #3a3b40 transparent;
 
     &::-webkit-scrollbar-thumb {
-      background: rgb(255 255 255 / 12%);
+      background: #3a3b40;
     }
   }
 
   html.rd-page.rd-nosb {
     .vp-sidebar {
-      box-shadow: none;
       transform: translateX(calc(-100% - #{$edge} - 4px));
     }
 
@@ -123,33 +161,46 @@ $column: 288px;
 
 .rd-sb-toggle {
   position: fixed;
-  // 和卡片第一行「博客主页」对齐，放在卡片内右上角
-  top: calc(var(--navbar-height, 3.75rem) + 16px + 0.75rem + 2px);
-  left: calc(#{$edge} + 15rem - 34px - 12px);
+  // 和卡片第一行「博客主页」对齐，放在卡片内右上角（第一行高 44px，和按钮一样高）
+  // top：卡片顶 + 1px 边框 + 列表上内边距 0.75rem
+  top: calc(var(--navbar-height, 3.75rem) + 16px + 1px + 0.75rem);
+  // left：卡片右缘（15rem）往回减 1px 边框、列表右内边距 0.5rem、链接右 margin 0.5rem 和按钮宽 44px
+  left: calc(#{$edge} + 15rem - 1px - 1rem - 44px);
   z-index: 101;
+  box-sizing: border-box;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   padding: 0;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
-  background: var(--vp-c-bg-elv);
-  color: var(--vp-c-text-mute);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  background: var(--vp-c-bg);
+  color: var(--ink);
+  // 位移 0.35s，要短于 nudgeLayout 的 380ms，旁注才会在收放结束后再重排
   transition:
     left 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     color 0.2s,
-    border-color 0.2s;
+    border-color 0.2s,
+    background-color 0.2s;
 
+  // 浅色：悬停反转成墨色底
   &:hover {
-    border-color: var(--vp-c-accent);
-    color: var(--vp-c-accent);
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--vp-c-bg);
   }
 
   &.off {
     left: $edge;
   }
+}
+
+// 深色：悬停只抬高一层底色，不用大块亮色
+[data-theme="dark"] .rd-sb-toggle:hover {
+  border-color: var(--line-strong);
+  background: var(--vp-c-bg-elv);
+  color: var(--ink);
 }
 
 .rd-toc-card {
@@ -160,21 +211,14 @@ $column: 288px;
   box-sizing: border-box;
   width: $column;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  background: var(--vp-c-bg-elv);
-  box-shadow: 0 2px 10px rgb(0 0 0 / 5%);
+  border-radius: var(--r);
+  // 不能透明：960–1179px 时卡片浮在正文上方
+  background: var(--vp-c-bg);
+  box-shadow: none;
   overflow: hidden;
   transition:
     box-shadow 0.3s,
     border-color 0.3s;
-
-  &.open {
-    box-shadow: 0 14px 36px -16px rgb(20 30 50 / 25%);
-  }
-}
-
-[data-theme="dark"] .rd-toc-card.open {
-  box-shadow: 0 14px 36px -16px rgb(0 0 0 / 70%);
 }
 
 .rd-toc-head {
@@ -182,13 +226,13 @@ $column: 288px;
   align-items: center;
   gap: 8px;
   width: 100%;
-  height: 42px;
+  min-height: 48px;
   padding: 0 14px;
   border: none;
   background: none;
-  color: var(--vp-c-text);
+  color: var(--ink);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-align: start;
   transition: color 0.2s;
@@ -197,11 +241,14 @@ $column: 288px;
     color: var(--vp-c-accent);
   }
 
+  // 标题数：等宽小字
   .rd-toc-count {
     flex: 1;
     color: var(--vp-c-text-mute);
+    font-family: var(--vp-font-mono);
     font-size: 12.5px;
     font-weight: 400;
+    letter-spacing: 0;
   }
 
   .rd-chev {
@@ -247,7 +294,7 @@ $column: 288px;
 
   // 滚动条：细、低调
   scrollbar-width: thin;
-  scrollbar-color: rgb(127 127 127 / 30%) transparent;
+  scrollbar-color: #c9c5bc transparent;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -255,33 +302,34 @@ $column: 288px;
 
   &::-webkit-scrollbar-thumb {
     border-radius: 3px;
-    background: rgb(127 127 127 / 30%);
+    background: #c9c5bc;
   }
 
   &::-webkit-scrollbar-track {
     background: transparent;
   }
 
+  // 条目：前面的小方块和标题文字并排，标题过长时省略号截在 .rd-toc-t 上
   a {
-    display: block;
-    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-height: 36px;
     margin-top: 2px;
-    padding: 5px 10px;
-    border-radius: 7px;
+    padding: 6px 10px;
+    border-radius: var(--r);
     color: var(--vp-c-text-mute);
     font-size: 14px;
     line-height: 1.5;
     text-decoration: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     transition:
       color 0.2s,
       background 0.2s;
 
     &:hover {
-      background: var(--vp-c-control, rgb(127 127 127 / 10%));
-      color: var(--vp-c-text);
+      background: var(--vp-c-bg-alt);
+      color: var(--ink);
     }
 
     &.lv2 {
@@ -293,32 +341,55 @@ $column: 288px;
       padding-inline-start: 22px;
     }
 
+    // 当前节：主色粗体 + 6px 主色方块
     &.active {
       color: var(--vp-c-accent);
+      font-weight: 700;
 
       &::before {
         content: "";
-        position: absolute;
-        inset: 6px auto 6px 2px;
-        width: 3px;
-        border-radius: 2px;
+        flex: 0 0 6px;
+        height: 6px;
         background: var(--vp-c-accent);
       }
     }
+
+    // 「参考资料」和前面的章节用一条细线隔开
+    &.sep {
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px solid var(--vp-c-divider);
+      border-radius: 0;
+    }
+  }
+
+  .rd-toc-t {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
 [data-theme="dark"] .rd-toc {
-  scrollbar-color: rgb(255 255 255 / 14%) transparent;
+  scrollbar-color: #3a3b40 transparent;
 
   &::-webkit-scrollbar-thumb {
-    background: rgb(255 255 255 / 14%);
+    background: #3a3b40;
   }
 }
 
-// 中等宽度没有右侧栏，卡片浮在正文上方，默认收起
+// 中等宽度没有右侧栏，卡片浮在正文上方，默认收起；展开时加一层很淡的阴影和正文分开
 @media (max-width: 1179px) {
   .rd-toc-card {
     width: 260px;
+
+    &.open {
+      box-shadow: 0 10px 28px -18px rgb(20 30 50 / 22%);
+    }
+  }
+
+  [data-theme="dark"] .rd-toc-card.open {
+    box-shadow: 0 10px 28px -18px rgb(0 0 0 / 60%);
   }
 }

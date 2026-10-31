@@ -1,26 +1,59 @@
 // 配色与字体（覆盖 vuepress-theme-hope 默认值）
 
 // ---------- 背景与文字 ----------
-// 浅色：暖白；深色：深墨灰
+// 浅色：暖白；深色：中性深灰底 + 暗暖灰正文（不用纯白字，长时间阅读不刺眼）
 $vp-c-bg: (
   light: #fcfbf8,
-  dark: #111318,
+  dark: #121315,
 );
 $vp-c-bg-alt: (
   light: #f5f3ee,
-  dark: #0c0e11,
+  dark: #0e0f11,
 );
 $vp-c-bg-elv: (
   light: #ffffff,
-  dark: #191c21,
+  dark: #18191c,
 );
 $vp-c-text: (
   light: #2b2f36,
-  dark: rgb(232 234 238 / 88%),
+  dark: #c2bfb9,
+);
+// 次要文字用实色（主题默认是正文色加透明度）
+$vp-c-text-mute: (
+  light: #5a5f68,
+  dark: #8f8c87,
 );
 $vp-c-divider: (
-  light: #e6e3dc,
-  dark: #262a31,
+  light: #e3dfd6,
+  dark: #232428,
+);
+$vp-c-border: (
+  light: #e3dfd6,
+  dark: #232428,
+);
+
+// ---------- 主色 ----------
+// 浅色墨蓝、深色沙金。主题生成器会把亮度强制成 35% / 55%，所以这里逐个写死
+$vp-c-accent: (
+  light: #1f4a7a,
+  dark: #d4a373,
+);
+$vp-c-accent-bg: (
+  light: #1f4a7a,
+  dark: #d4a373,
+);
+$vp-c-accent-hover: (
+  light: #2a5f99,
+  dark: #e0b88e,
+);
+$vp-c-accent-soft: (
+  light: rgb(31 74 122 / 12%),
+  dark: rgb(212 163 115 / 14%),
+);
+// 主色底上的文字：浅色白字，深色用页面底色（沙金上放白字对比度不够）
+$vp-c-accent-text: (
+  light: #ffffff,
+  dark: #121315,
 );
 
 // ---------- 字体 ----------
@@ -30,11 +63,19 @@ $vp-c-divider: (
 $vp-font: '"Times New Roman", Times, SimSun, "宋体", "Songti SC", STSong, "Noto Serif SC", "Source Serif 4", serif, "Apple Color Emoji", "Segoe UI Emoji"';
 $vp-font-heading: $vp-font;
 $vp-font-mono: '"JetBrains Mono", "Cascadia Code", Consolas, SimSun, "Noto Serif SC", monospace';
+// 展示字体：站点名用 Playfair Display，首页大标题和博主名用 Noto Serif Display（可变宽度，能压窄）
+// 只有这几处用到，均为自托管的 latin 分片；中文仍回退到宋体
+$vp-font-brand: '"Playfair Display", "Times New Roman", Times, SimSun, serif';
+$vp-font-display: '"Noto Serif Display Variable", "Noto Serif Display", "Times New Roman", Times, SimSun, "Songti SC", serif';
 
 // ---------- 布局 ----------
 $sidebar-width: 16rem;
 
-// 正文宽度：约 40 个汉字一行，适合阅读
-$content-width: 780px;
+// 导航栏：桌面 64px（手机保持主题默认 3.25rem）
+$navbar-height: 4rem;
+
+// 正文宽度：18px 字号下约 38 个汉字一行（684px = 38em）
+// 主题的版心是 content-box，左右 2.5rem 内边距另算；标题、面包屑和上下页导航都用这个宽度
+$content-width: 684px;
 $wide-content-width: 1000px;
 $home-page-width: 1160px;

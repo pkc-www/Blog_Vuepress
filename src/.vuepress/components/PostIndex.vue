@@ -25,8 +25,8 @@ interface Course {
   chapters: Chapter[];
 }
 
-// 每张卡片最多列出的章节数
-const PREVIEW = 5;
+// 每张卡片最多列出的章节数（4 条让各卡片高度整齐）
+const PREVIEW = 4;
 
 const list = courses as Course[];
 
@@ -89,14 +89,6 @@ onMounted(() => {
   requestAnimationFrame(step);
 });
 
-// 卡片上跟随鼠标的光斑
-const onPointerMove = (event: PointerEvent): void => {
-  const card = event.currentTarget as HTMLElement;
-  const rect = card.getBoundingClientRect();
-  card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-  card.style.setProperty("--my", `${event.clientY - rect.top}px`);
-};
-
 const stats = computed(() => {
   const notes = list.reduce((sum, c) => sum + c.chapters.length, 0);
   const words = list.reduce((sum, c) => sum + c.words, 0);
@@ -110,7 +102,8 @@ const stats = computed(() => {
     { value: Math.round(list.length * t), unit: "门", label: "课程" },
     { value: Math.round(notes * t), unit: "篇", label: "笔记" },
     { value: ((words / 10000) * t).toFixed(1), unit: "万", label: "字数" },
-    { value: updated ? updated.slice(5).replace("-", "/") : "—", unit: "", label: "最近更新" },
+    // 日期写成 MM-DD，<time> 里保留完整日期
+    { value: updated ? updated.slice(5) : "—", unit: "", label: "最近更新", datetime: updated },
   ];
 });
 </script>
@@ -128,14 +121,20 @@ const stats = computed(() => {
           pathLength="1"
         />
       </svg>
-      <p class="pi-eyebrow">Course Notes · 课程笔记</p>
+      <p class="pi-eyebrow">
+        <span class="pi-eyebrow-rule" aria-hidden="true" />
+        <span class="pi-eyebrow-en" lang="en">Course Notes</span>
+        <span class="pi-eyebrow-zh">课程笔记</span>
+      </p>
       <h1 class="pi-title">博文大全</h1>
       <p class="pi-lead">电气工程专业课的学习笔记，按课程与章节整理。从信号与系统、电磁场到电力系统，持续更新中。</p>
       <dl class="pi-stats">
         <div v-for="item in stats" :key="item.label" class="pi-stat">
           <dt>{{ item.label }}</dt>
           <dd>
-            {{ item.value }}<small v-if="item.unit">{{ item.unit }}</small>
+            <time v-if="item.datetime" :datetime="item.datetime">{{ item.value }}</time>
+            <template v-else>{{ item.value }}</template>
+            <small v-if="item.unit">{{ item.unit }}</small>
           </dd>
         </div>
       </dl>
@@ -147,11 +146,11 @@ const stats = computed(() => {
         :key="course.path"
         class="pi-card course-hue"
         :style="{ '--i': index, '--h': course.hue }"
-        @pointermove="onPointerMove"
       >
+        <span class="pi-bar" aria-hidden="true" />
         <div class="pi-card-head">
-          <span class="pi-index">{{ pad(index) }}</span>
-          <span v-if="course.tag" class="pi-tag">{{ course.tag }}</span>
+          <span class="pi-index" aria-hidden="true">{{ pad(index) }}</span>
+          <span v-if="course.tag" class="pi-tag"><i class="pi-dot" aria-hidden="true" />{{ course.tag }}</span>
         </div>
 
         <h2 class="pi-card-title">
@@ -171,7 +170,7 @@ const stats = computed(() => {
         <footer class="pi-card-foot">
           <span class="pi-meta">
             {{ course.chapters.length }} 篇<i />{{ formatWords(course.words) }}
-            <template v-if="course.updated"><i />{{ course.updated }}</template>
+            <template v-if="course.updated"><i /><time :datetime="course.updated">{{ course.updated.slice(5) }}</time></template>
           </span>
           <RouteLink :to="course.path" class="pi-more">
             {{
@@ -186,10 +185,10 @@ const stats = computed(() => {
         </footer>
       </article>
 
-      <aside class="pi-card pi-card-recent" :style="{ '--i': list.length }">
-        <div class="pi-card-head">
-          <span class="pi-index">LATEST</span>
-          <span class="pi-tag">最近更新</span>
+      <aside class="pi-card pi-card-recent" :style="{ '--i': list.length }" aria-labelledby="pi-latest">
+        <div class="pi-recent-head">
+          <span class="pi-index" lang="en" aria-hidden="true">LATEST</span>
+          <h2 id="pi-latest" class="pi-recent-heading">最近更新</h2>
         </div>
         <ol class="pi-recent">
           <li
@@ -199,13 +198,12 @@ const stats = computed(() => {
             :style="{ '--h': item.hue }"
           >
             <RouteLink :to="item.path" :title="item.desc || item.title">
-              <time>{{ item.date!.slice(5) }}</time>
+              <time :datetime="item.date!">{{ item.date!.slice(5) }}</time>
               <span class="pi-recent-title">{{ item.title }}</span>
-              <span class="pi-recent-course"><i />{{ item.course }}</span>
+              <span class="pi-recent-course"><i class="pi-dot" aria-hidden="true" />{{ item.course }}</span>
             </RouteLink>
           </li>
         </ol>
-        <p class="pi-recent-hint">按 <kbd>Ctrl</kbd> <kbd>K</kbd> 可搜索全部笔记内容</p>
       </aside>
     </div>
   </div>
@@ -216,8 +214,6 @@ const stats = computed(() => {
   --pi-accent: var(--vp-c-accent);
   --pi-line: var(--vp-c-divider);
   --pi-muted: var(--vp-c-text-mute);
-  --pi-card: var(--vp-c-bg-elv);
-  --pi-radius: 16px;
 
   margin-top: 0.5rem;
 }
@@ -275,25 +271,13 @@ const stats = computed(() => {
   animation-delay: calc(0.25s + var(--i, 0) * 0.07s);
 }
 
-/* ---------- 顶部 ---------- */
+/* ---------- 顶部：大留白，不再铺坐标纸网格 ---------- */
 .pi-hero {
   position: relative;
-  padding: 3.5rem 0 2.75rem;
+  padding: 128px 0 112px;
+  overflow: hidden;
+  // 波形的 z-index: -1 依赖这里新建的层叠上下文
   isolation: isolate;
-
-  // 坐标纸网格，四周渐隐
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0 -2rem;
-    z-index: -1;
-    background-image:
-      linear-gradient(var(--pi-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--pi-line) 1px, transparent 1px);
-    background-size: 28px 28px;
-    mask-image: radial-gradient(ellipse 70% 90% at 15% 30%, #000 10%, transparent 70%);
-    opacity: 0.7;
-  }
 }
 
 .pi-wave {
@@ -325,237 +309,246 @@ const stats = computed(() => {
     animation-delay: 0.6s !important;
   }
 
+  // 目标方波：灰色虚线
   .pi-wave-square {
     animation: pi-fade 1s 1.2s both;
     stroke: var(--pi-muted);
     stroke-dasharray: 3 5;
     stroke-width: 1;
-    opacity: 0.5;
+    opacity: 0.6;
   }
 
+  // 1 项、3 项用中性灰，只有 9 项用主色
   .pi-wave-0 {
-    stroke: oklch(0.68 0.1 185);
+    stroke: var(--line-strong);
     stroke-width: 1;
-    opacity: 0.25;
   }
 
   .pi-wave-1 {
-    stroke: oklch(0.65 0.12 300);
+    stroke: var(--pi-muted);
     stroke-width: 1.2;
-    opacity: 0.45;
+    opacity: 0.75;
   }
 
   .pi-wave-2 {
-    stroke-width: 1.8;
-    opacity: 0.9;
+    stroke-width: 2;
   }
 }
 
+// 横线 + 英文等宽小标 + 中文
 .pi-eyebrow {
-  margin: 0 0 0.9rem;
-  color: var(--pi-accent);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 14px;
+  align-items: center;
+  margin: 0;
+  color: var(--ink);
+}
+
+.pi-eyebrow-rule {
+  display: inline-block;
+  width: 40px;
+  height: 1.5px;
+  background: var(--ink);
+}
+
+.pi-eyebrow-en {
+  font-family: var(--vp-font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
 }
 
+.pi-eyebrow-zh {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
 .pi-title {
-  margin: 0;
+  margin: 18px 0 0;
   padding: 0;
   border: none;
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  color: var(--ink);
+  font-size: clamp(44px, 6vw, 80px);
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: 0.04em;
+  line-height: 1.05;
+  letter-spacing: 0.08em;
 }
 
 .pi-lead {
-  max-width: 34em;
-  margin: 1.1rem 0 0;
+  max-width: 30em;
+  margin: 32px 0 0;
   color: var(--pi-muted);
-  font-size: 1.05rem;
+  font-size: 17px;
   line-height: 1.8;
 }
 
+// 统计数字：细等宽字，tabular-nums 让 count-up 滚动时宽度不跳
 .pi-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 0;
-  margin: 2.2rem 0 0;
-
-  .pi-stat {
-    padding: 0 2rem;
-    border-inline-start: 1px solid var(--pi-line);
-
-    &:first-child {
-      padding-inline-start: 0;
-      border: none;
-    }
-  }
+  gap: 20px 32px;
+  margin: 64px 0 0;
 
   dt {
     color: var(--pi-muted);
-    font-size: 0.8rem;
+    font-size: 13px;
+    font-weight: 600;
     letter-spacing: 0.08em;
   }
 
   dd {
-    margin: 0.2rem 0 0;
-    font-size: 1.7rem;
-    font-weight: 650;
+    margin: 8px 0 0;
+    color: var(--ink);
+    font-family: var(--vp-font-mono);
+    font-size: clamp(30px, 3.4vw, 44px);
+    font-weight: 300;
     font-variant-numeric: tabular-nums;
-    line-height: 1.2;
+    line-height: 1;
 
     small {
-      margin-inline-start: 0.2em;
+      margin-inline-start: 6px;
       color: var(--pi-muted);
-      font-size: 0.85rem;
-      font-weight: 500;
+      font-family: var(--vp-font);
+      font-size: 15px;
+      font-weight: 400;
     }
   }
 }
 
-/* ---------- 课程卡片 ---------- */
+@media (min-width: 641px) {
+  .pi-stats {
+    gap: 20px 0;
+
+    .pi-stat + .pi-stat {
+      margin-inline-start: 32px;
+      padding-inline-start: 32px;
+      border-inline-start: 1px solid var(--pi-line);
+    }
+  }
+}
+
+/* ---------- 课程卡片：开放式，顶部一条细线 + 课程色短条 ---------- */
 .pi-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
-  padding-bottom: 2rem;
+  gap: 56px 64px;
+  padding-bottom: 160px;
 }
 
 .pi-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 1.6rem 1.75rem 1.25rem;
-  border: 1px solid var(--pi-line);
-  border-radius: var(--pi-radius);
-  background: var(--pi-card);
-  overflow: hidden;
-  isolation: isolate;
-  transition:
-    transform 0.3s cubic-bezier(0.2, 0.7, 0.3, 1),
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+  min-width: 0;
+  padding: 28px 0 0;
+  border-top: 1px solid var(--pi-line);
 
-  // 悬停时顶部出现一道主色细线
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    height: 3px;
-    background: linear-gradient(90deg, var(--pi-accent), transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.45s ease;
-  }
-
-  // 跟随鼠标的柔光
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: radial-gradient(
-      320px circle at var(--mx, 50%) var(--my, 0),
-      color-mix(in srgb, var(--pi-accent) 12%, transparent),
-      transparent 70%
-    );
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    pointer-events: none;
-  }
-
-  &:hover::after {
-    opacity: 1;
-  }
-
-  &:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--pi-accent) 35%, var(--pi-line));
-    box-shadow: 0 14px 36px -12px rgb(20 40 70 / 22%);
-
-    &::before {
-      transform: scaleX(1);
-    }
+  // 悬停不上浮，只让空心编号填成课程色
+  &.course-hue:hover .pi-index {
+    color: var(--cc);
+    -webkit-text-stroke-color: var(--cc);
   }
 }
 
-.pi-card.course-hue {
-  --pi-accent: var(--cc);
-
-  background:
-    radial-gradient(120% 70% at 0% 0%, color-mix(in srgb, var(--cc) 7%, transparent), transparent 60%),
-    var(--pi-card);
+// 压在顶部细线上的 40px 课程色短条
+.pi-bar {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--cc);
 }
 
 .pi-card-head {
   display: flex;
-  align-items: center;
+  gap: 12px;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 0.9rem;
 }
 
+// 空心大编号（深色模式的描边色见 index.scss 第 9 节）
 .pi-index {
-  color: var(--pi-accent);
+  color: transparent;
   font-family: var(--vp-font-mono);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  opacity: 0.85;
+  font-size: clamp(44px, 4.4vw, 56px);
+  font-weight: 200;
+  font-variant-numeric: tabular-nums;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  -webkit-text-stroke: 1.25px var(--ink);
+  transition:
+    color 0.25s ease,
+    -webkit-text-stroke-color 0.25s ease;
 }
 
+// 课程分类：透明底描边胶囊 + 课程色圆点
 .pi-tag {
-  padding: 0.15rem 0.65rem;
+  display: inline-flex;
+  flex: none;
+  gap: 6px;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--pi-line);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--pi-accent) 10%, transparent);
-  color: var(--pi-accent);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  color: var(--vp-c-text);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.pi-dot {
+  display: inline-block;
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cc);
 }
 
 .pi-card-title {
-  margin: 0;
+  margin: 28px 0 0;
   padding: 0;
   border: none;
-  font-size: 1.4rem;
-  font-weight: 650;
-  line-height: 1.35;
+  font-size: clamp(22px, 2.2vw, 26px);
+  font-weight: 700;
+  line-height: 1.3;
   letter-spacing: 0.03em;
+}
 
-  a {
-    color: var(--vp-c-text);
-    border: none !important;
+// 只有标题（和章节链接）可点；多一层 .post-index 压过 motion.scss 去掉下划线的规则
+.post-index .pi-card-title a {
+  color: var(--ink);
+  border: none !important;
+  text-decoration: none;
+  transition: color 0.2s ease;
 
-    // 整个标题区域可点
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
+  &:hover {
+    color: var(--vp-c-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
   }
 }
 
 .pi-card-desc {
   display: -webkit-box;
-  margin: 0.55rem 0 1.1rem;
+  margin: 12px 0 0;
   overflow: hidden;
   color: var(--pi-muted);
-  font-size: 0.92rem;
-  line-height: 1.7;
+  font-size: 14.5px;
+  line-height: 1.85;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
 .pi-chapters {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-  margin: 0 0 1rem;
-  padding: 0.35rem 0 0;
-  border-top: 1px dashed var(--pi-line);
+  margin: 24px 0 20px;
+  padding: 0;
   list-style: none;
 
   li {
@@ -564,60 +557,61 @@ const stats = computed(() => {
 
   a {
     display: flex;
-    gap: 0.8rem;
     align-items: baseline;
-    margin: 0 -0.6rem;
-    padding: 0.42rem 0.6rem;
+    box-sizing: border-box;
+    min-height: 44px;
+    margin: 0 -8px;
+    padding: 10px 8px;
     border: none !important;
-    border-radius: 8px;
+    border-radius: var(--r);
     color: var(--vp-c-text);
-    font-size: 0.93rem;
-    line-height: 1.5;
-    transition: background 0.2s ease, color 0.2s ease;
+    font-size: 15px;
+    line-height: 1.55;
+    transition: background-color 0.2s ease;
 
     &:hover {
-      background: color-mix(in srgb, var(--pi-accent) 8%, transparent);
-      color: var(--pi-accent);
+      background: var(--vp-c-bg-alt);
 
-      .pi-ch-no {
-        color: var(--pi-accent);
-        transform: translateX(2px);
+      .pi-ch-name {
+        color: var(--vp-c-accent);
       }
     }
   }
 }
 
+// 章节号右对齐，一直用课程色
 .pi-ch-no {
-  flex: none;
-  transition: color 0.2s ease, transform 0.25s ease;
-  min-width: 2.2em;
-  color: var(--pi-muted);
+  flex: 0 0 2.2em;
+  padding-inline-end: 0.6em;
+  box-sizing: border-box;
+  color: var(--cc);
   font-family: var(--vp-font-mono);
-  font-size: 0.8rem;
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
+// 名称单行省略，卡片高度整齐
 .pi-ch-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
 .pi-card-foot {
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1rem;
+  gap: 4px 12px;
   align-items: center;
   justify-content: space-between;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--pi-line);
-  font-size: 0.8rem;
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 .pi-meta {
   color: var(--pi-muted);
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
 
   i {
@@ -630,15 +624,21 @@ const stats = computed(() => {
     vertical-align: middle;
     opacity: 0.6;
   }
+
+  time {
+    font-family: var(--vp-font-mono);
+  }
 }
 
-.pi-more {
+.post-index .pi-more {
   display: inline-flex;
-  gap: 0.3em;
+  gap: 6px;
   align-items: center;
+  min-height: 44px;
   border: none !important;
-  color: var(--pi-accent);
-  font-weight: 600;
+  color: var(--vp-c-accent);
+  font-size: 14px;
+  text-decoration: none;
 
   svg {
     width: 14px;
@@ -647,18 +647,23 @@ const stats = computed(() => {
     stroke: currentcolor;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-width: 1.6;
+    stroke-width: 1.8;
     transition: transform 0.25s ease;
   }
 
-  &:hover svg {
-    transform: translateX(3px);
+  &:hover {
+    text-decoration: underline;
+
+    svg {
+      transform: translateX(3px);
+    }
   }
 }
 
 @media (min-width: 720px) {
   .pi-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 88px 64px;
   }
 }
 
@@ -673,102 +678,95 @@ const stats = computed(() => {
   }
 }
 
+/* ---------- 最近更新：bg-alt 底块，条目分两行 ---------- */
 .pi-card-recent {
-  background: transparent;
-  border-style: dashed;
-
-  &:hover {
-    transform: none;
-    box-shadow: none;
-  }
-
-  &::before {
-    display: none;
-  }
+  padding: 40px 40px 32px;
+  border-top: none;
+  background: var(--vp-c-bg-alt);
 
   .pi-index {
-    font-size: 0.75rem;
-  }
-
-  kbd {
-    padding: 0.05em 0.4em;
-    border: 1px solid var(--pi-line);
-    border-radius: 4px;
-    font-family: var(--vp-font-mono);
-    font-size: 0.8em;
+    font-size: clamp(48px, 5vw, 72px);
   }
 }
 
-.pi-recent {
-  flex: 1;
+.pi-recent-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: baseline;
+}
+
+// 重置主题给正文 h2 加的上边距、下划线和内边距
+.pi-recent-heading {
   margin: 0;
+  padding: 0;
+  border: none;
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+}
+
+.pi-recent {
+  margin: 18px 0 0;
   padding: 0;
   list-style: none;
 
   li {
     margin: 0;
-    border-bottom: 1px solid var(--pi-line);
-
-    &:last-child {
-      border-bottom: none;
-    }
+    border-top: 1px solid var(--pi-line);
   }
 
   a {
-    display: flex;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 4.2em 1fr;
+    gap: 2px 12px;
     align-items: baseline;
-    padding: 0.7rem 0;
+    box-sizing: border-box;
+    min-height: 44px;
+    margin: 0 -8px;
+    padding: 10px 8px;
     border: none !important;
+    border-radius: var(--r);
     color: var(--vp-c-text);
-    font-size: 0.95rem;
-    transition: color 0.2s ease;
+    transition: background-color 0.2s ease;
 
+    // 底块是 bg-alt，悬停改用页面底色
     &:hover {
-      color: var(--pi-accent);
+      background: var(--vp-c-bg);
+
+      .pi-recent-title {
+        color: var(--vp-c-accent);
+      }
     }
   }
 
   time {
-    flex: none;
-    color: var(--pi-accent);
+    color: var(--pi-muted);
     font-family: var(--vp-font-mono);
-    font-size: 0.8rem;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
   }
 }
 
+// 标题可以换行
 .pi-recent-title {
-  flex: 1;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  transition: color 0.2s ease;
 }
 
+// 课程名 + 色点放在第二行
 .pi-recent-course {
-  flex: none;
+  display: flex;
+  grid-column: 2;
+  gap: 6px;
+  align-items: center;
   color: var(--pi-muted);
-  font-size: 0.8rem;
-
-  i {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    margin-inline-end: 0.45em;
-    border-radius: 50%;
-    background: var(--cc);
-    vertical-align: middle;
-  }
-}
-
-.pi-recent .course-hue time {
-  color: var(--cc);
-}
-
-.pi-recent-hint {
-  margin: 0.8rem 0 0;
-  color: var(--pi-muted);
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 
 @media (max-width: 959px) {
@@ -779,19 +777,11 @@ const stats = computed(() => {
 
 @media (max-width: 719px) {
   .pi-hero {
-    padding: 2rem 0 2rem;
+    padding: 56px 0 48px;
   }
 
-  .pi-stats .pi-stat {
-    padding: 0 1.1rem;
-  }
-
-  .pi-stats dd {
-    font-size: 1.35rem;
-  }
-
-  .pi-card {
-    padding: 1.3rem 1.25rem 1.1rem;
+  .pi-card-recent {
+    padding: 24px 20px;
   }
 }
 </style>

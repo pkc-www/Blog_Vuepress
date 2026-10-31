@@ -16,8 +16,8 @@ export default hopeTheme({
   sidebar,
 
   navbarLayout: {
-    start: ["Brand"],
-    center: ["Links"],
+    start: ["Brand", "Links"], // 导航链接紧跟站点名，中间栏留空
+    center: [],
     end: ["Repo", "Outlook", "Search"], // 👈 删掉了 Language，保留 Search
   },
 

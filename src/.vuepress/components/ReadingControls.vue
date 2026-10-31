@@ -88,6 +88,10 @@ const readHeadings = (): void => {
   );
 };
 
+// 「参考资料」一节在面板里和前面的章节隔开
+const isRefs = (heading: Heading): boolean =>
+  heading.level === 2 && /^参考(资料|文献)/.test(heading.title);
+
 onContentUpdated((reason) => {
   if (reason !== "beforeUnmount") window.setTimeout(() => {
     readHeadings();
@@ -196,9 +200,9 @@ onBeforeUnmount(() => {
               :key="h.slug"
               :href="`#${h.slug}`"
               :data-slug="h.slug"
-              :class="[`lv${h.level}`, { active: h.slug === current }]"
+              :class="[`lv${h.level}`, { active: h.slug === current, sep: isRefs(h) }]"
               @click.prevent="go(h)"
-            >{{ h.title }}</a>
+            ><span class="rd-toc-t">{{ h.title }}</span></a>
           </nav>
         </div>
       </div>

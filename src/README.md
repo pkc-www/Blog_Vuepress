@@ -5,6 +5,9 @@ icon: house
 title: 博客主页
 bgImage: /assets/images/bg_light.png    # 浅色模式下的背景图
 bgImageDark: /assets/images/bg.png # 深色模式下的背景图 (可选)
+bgImageStyle: # 背景图靠右下对齐，按首屏高度放大（--hb-h 在 styles/home.scss 里定义）
+  backgroundSize: "max(100%, calc(var(--hb-h) * 1.78)) auto"
+  backgroundPosition: "right bottom"
 heroImage: /assets/images/ava.jpg # 首页中间显示的圆圈图片
 heroImageStyle:
   maxWidth: "150px"    # 👈 修改这里的数值，原来默认通常是 200px 左右

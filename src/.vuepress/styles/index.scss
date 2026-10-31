@@ -1,3 +1,129 @@
+@use "./button";
+
+/* =========================================
+   T. 设计 token（主题 palette 之外的补充变量）
+   ========================================= */
+// --ink：比正文更深的“墨色”，用于标题、悬停、当前项
+// --line-strong：图标按钮、搜索框这类可点控件的边框
+// --rule：引文竖线、次按钮边框这类需要“压得住”的线
+// --r：全站统一的 2px 圆角（标签胶囊和图片除外）
+:root {
+  --ink: #16181c;
+  --line-strong: #8f8b84;
+  --rule: #16181c;
+  --r: 2px;
+  --display: var(--vp-font-display);
+  // --tex：文章正文用的 LaTeX 风格字体。西文和数字用 KaTeX_Main（Computer Modern，KaTeX 的样式表全站都会加载），
+  // 中文仍走系统宋体，最后才回退到自托管的思源宋体，不额外下载中文字体
+  --tex: "KaTeX_Main", SimSun, "宋体", "Songti SC", STSong, "Noto Serif SC", serif, "Apple Color Emoji", "Segoe UI Emoji";
+
+  color-scheme: light;
+  scrollbar-color: #c9c5bc var(--vp-c-bg);
+}
+
+html[data-theme="dark"] {
+  --ink: #d3d0ca;
+  --line-strong: #55565c;
+  --rule: #303136;
+
+  color-scheme: dark;
+  scrollbar-color: #3a3b40 #121315;
+}
+
+/* ---------- 滚动条：浅色浅灰、深色暗灰（不再跟随主色） ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track-piece {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: #c9c5bc;
+  background-clip: padding-box;
+
+  &:hover,
+  &:active {
+    background: #b3aea4;
+    background-clip: padding-box;
+  }
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #3a3b40;
+  background-clip: padding-box;
+
+  &:hover,
+  &:active {
+    background: #4a4b51;
+    background-clip: padding-box;
+  }
+}
+
+// 主题侧栏与搜索列表默认用主色滑块，改成中性色
+.vp-sidebar,
+.slimsearch-result-wrapper {
+  scrollbar-color: #c9c5bc transparent;
+}
+
+html[data-theme="dark"] {
+  .vp-sidebar,
+  .slimsearch-result-wrapper {
+    scrollbar-color: #3a3b40 transparent;
+  }
+}
+
+.slimsearch-result-wrapper::-webkit-scrollbar-thumb,
+.slimsearch-result-wrapper::-webkit-scrollbar-thumb:active {
+  background: #c9c5bc;
+}
+
+html[data-theme="dark"] {
+  .slimsearch-result-wrapper::-webkit-scrollbar-thumb,
+  .slimsearch-result-wrapper::-webkit-scrollbar-thumb:active {
+    background: #3a3b40;
+  }
+}
+
+/* ---------- 焦点框与选区 ---------- */
+:focus-visible {
+  outline: 2px solid var(--vp-c-accent);
+  outline-offset: 3px;
+}
+
+// 只改颜色，批注读的是 Selection API，不受影响
+::selection {
+  background: var(--vp-c-accent);
+  color: var(--vp-c-accent-text);
+}
+
+/* ---------- 链接：悬停变墨色 ---------- */
+// :where 把优先级压到和裸 a 一样，组件里自己写了颜色的链接不受影响
+a {
+  text-underline-offset: 0.2em;
+}
+
+a:where(:hover) {
+  color: var(--ink);
+}
+
+// “跳到正文”：获得焦点时从左上角出现，墨色底
+.vp-skip-link {
+  inset-inline-start: 16px;
+  top: 8px;
+  padding: 10px 14px;
+  border-radius: var(--r);
+  background: var(--ink);
+  color: var(--vp-c-bg);
+  box-shadow: none;
+  font-weight: 600;
+}
+
 /* =========================================
    0. 正文排版
    ========================================= */
@@ -16,7 +142,7 @@
     margin-top: 0.3em;
   }
 
-  // 标题：上方多留白，h2 带细分隔线
+  // 标题：上方多留白（h2 不再带分隔线）
   h1,
   h2,
   h3,
@@ -27,8 +153,6 @@
 
   h2 {
     margin-top: 2.4em;
-    padding-bottom: 0.35em;
-    border-bottom: 1px solid var(--vp-c-divider);
   }
 
   h3 {
@@ -46,10 +170,38 @@
     color: var(--vp-c-text-mute);
   }
 
-  // 表格
+  // 表格：三线表（booktabs）。保留主题的 display: block + overflow-x: auto，宽表格仍可横向滚动
+  // 线画在单元格上，所以只和表格内容一样宽；不加 white-space: nowrap，长文本表格（如术语对照）照常换行
   table {
-    border-radius: 8px;
-    overflow: hidden;
+    font-size: 0.92em;
+    line-height: 1.6;
+  }
+
+  tbody tr:nth-child(odd) {
+    background: transparent;
+  }
+
+  th,
+  td {
+    padding: 0.6em 0.9em 0.6em 0;
+    border: 0;
+    vertical-align: baseline;
+  }
+
+  th {
+    color: var(--ink);
+    font-weight: 700;
+    text-align: start;
+  }
+
+  // 顶线、底线 1.5px，表头下 1px
+  thead th {
+    border-top: 1.5px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  tbody tr:last-child > * {
+    border-bottom: 1.5px solid var(--rule);
   }
 
   // 链接
@@ -64,23 +216,243 @@
   }
 }
 
+/* ---------- 0.1 文章正文：LaTeX 风格字体、18px、两端对齐 ---------- */
+// 只作用于文章页的正文：博文大全、批注复习页和首页底部欢迎语也在 [vp-content] 里，排除掉
+// :where() 把前面的限定条件压成 0 优先级，整体仍和 [vp-content] xxx 一样，不会压过组件和批注的样式
+$prose: ":where(.theme-container:not(.post-index-page, .anno-review-page) .vp-page:not(.vp-blog-home)) [vp-content]";
+
+#{$prose} {
+  font-family: var(--tex);
+  font-size: 18px;
+  letter-spacing: 0.01em;
+
+  // 段落、列表只留上边距（相邻元素之间不再叠加 margin，h2 上方的留白才是准确的 2em）
+  p {
+    margin: 0.85em 0 0;
+  }
+
+  ul,
+  ol {
+    margin: 0.6em 0 0;
+    padding-inline-start: 1.6em;
+  }
+
+  li + li {
+    margin-top: 0.35em;
+  }
+
+  li::marker {
+    color: var(--vp-c-text);
+  }
+
+  ol {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  ol > li::marker {
+    font-weight: 400;
+  }
+
+  // 两端对齐只加在正文段落和列表项上；提示框标题、公式块、表格、脚注不受影响
+  // 代码块的 pre 自带 text-align: left，行内公式由 KaTeX 自己排
+  :is(p, li):not(.hint-container-title, .katex-block, table *, .footnotes *) {
+    text-align: justify;
+    text-justify: inter-character;
+    line-break: strict;
+    overflow-wrap: break-word;
+  }
+
+  // 标题也用正文字体（主题直接给 h1-h6 指定了 --vp-font-heading，不会继承）
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--ink);
+    font-family: var(--tex);
+    letter-spacing: 0.01em;
+  }
+
+  // 编号写在标题文字里，不往 DOM 里加（批注索引和「此页内容」读的都是 textContent）
+  h2 {
+    margin: 2em 0 0.6em;
+    padding-bottom: 0;
+    border-bottom: 0;
+    font-size: 1.3em;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  h3 {
+    margin: 1.6em 0 0.5em;
+    font-size: 1.12em;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  em,
+  i {
+    letter-spacing: 0;
+  }
+
+  sub,
+  sup {
+    font-size: 0.72em;
+    line-height: 0;
+    letter-spacing: 0;
+  }
+
+  // 代码块外框保持原来的字体（只影响语言标签；pre、行号自己指定了等宽字体）
+  div[class*="language-"] {
+    font-family: var(--vp-font);
+  }
+
+  // 窄屏和主题一致：段落改回左对齐，避免一行只有几个字时字距被拉得很开
+  @media (max-width: 419px) {
+    :is(p, li):not(.hint-container-title, .katex-block, table *, .footnotes *) {
+      text-align: start;
+    }
+  }
+}
+
+// 正文直接子级的 h2 / h3：主题用“负 margin + 导航栏高度的 padding”给锚点跳转留位置（优先级 1,2,1）
+// 这里写同样的选择器，只把可见的上间距改成 2em / 1.6em，padding 不动，滚动定位和「此页内容」的高亮线照旧
+#{$prose}:not(.custom) #markdown-content {
+  > h2 {
+    margin-top: calc(2em - 1rem - var(--navbar-height));
+    margin-bottom: 0.6em;
+  }
+
+  > h3 {
+    margin-top: calc(1.6em - 1rem - var(--navbar-height));
+    margin-bottom: 0.5em;
+  }
+}
+
+/* ---------- 0.2 文章标题、面包屑、信息行、摘要 ---------- */
+// 标题字号 34px；主题的负 margin-top / padding-top（锚点偏移）带 !important，这里不碰
+.vp-page-title h1 {
+  margin-bottom: 20px;
+  color: var(--ink);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+
+  @media (max-width: 719px) {
+    font-size: 28px;
+  }
+}
+
+// 面包屑：14px 灰字，“/” 分隔（主题自带），每项 44px 高的点击区域，悬停墨色加下划线
+.vp-breadcrumb {
+  padding-top: 0.5rem;
+  color: var(--vp-c-text-mute);
+  font-size: 14px;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--vp-c-text-mute);
+
+    &:hover {
+      color: var(--ink);
+      text-decoration: underline;
+    }
+  }
+
+  li {
+    line-height: 1.5;
+
+    // 当前页：正文色，不可点
+    &.is-active a {
+      color: var(--vp-c-text);
+    }
+  }
+
+  li + li::before {
+    color: var(--vp-c-text-mute);
+  }
+}
+
+// 信息行：14px 灰字，日期用等宽数字；分类、标签沿用 §12 的胶囊（分类色点暂不加）
+.vp-page-title .page-info {
+  gap: 6px 18px;
+  color: var(--vp-c-text-mute);
+  font-size: 14px;
+
+  > span {
+    gap: 6px;
+    margin: 0;
+    font-size: inherit;
+    line-height: 1.6;
+  }
+
+  .icon {
+    margin-inline-end: 0;
+  }
+
+  .page-date-info > span {
+    font-family: var(--vp-font-mono);
+    font-size: 13px;
+  }
+
+  .page-category-info,
+  .page-tag-info {
+    gap: 8px;
+  }
+
+  .page-category-item,
+  .page-tag-item {
+    margin: 0;
+  }
+}
+
+// 摘要（frontmatter.description，由 PageLead.vue 插在标题区，不在 [vp-content] 里）
+.vp-page-lead {
+  margin: 24px 0 0;
+  color: var(--vp-c-text-mute);
+  font-size: 1.1rem;
+  line-height: 1.85;
+  text-wrap: pretty;
+}
+
 /* =========================================
    1. 代码
    ========================================= */
 [vp-content] {
-  // 行内代码：浅色底 + 主色文字
+  // 行内代码：浅色底 + 主色文字；重置字距，避免继承正文的 0.01em
   :not(pre) > code {
     padding: 0.15em 0.4em;
-    border-radius: 4px;
+    border-radius: var(--r);
     background: var(--vp-c-control);
     color: var(--vp-c-accent);
     font-size: 0.88em;
+    letter-spacing: 0;
   }
 
-  // 代码块：圆角 + 细边框
+  // 公式内部不继承正文的 letter-spacing
+  .katex {
+    letter-spacing: 0;
+  }
+
+  // 任务列表勾选框对勾：主色底上用 --vp-c-accent-text
+  .task-list-item-checkbox:checked::before {
+    border-color: var(--vp-c-accent-text);
+  }
+
+  // 代码块：2px 圆角 + 细边框
   div[class*="language-"] {
     border: 1px solid var(--vp-c-divider);
-    border-radius: 8px;
+    border-radius: var(--r);
     overflow: hidden;
   }
 
@@ -96,7 +468,7 @@
 @each $type in (note, info, tip, important, warning, caution) {
   .hint-container.#{$type} {
     border-inline-start: 4px solid var(--#{$type}-c-accent);
-    border-radius: 6px;
+    border-radius: var(--r);
   }
 }
 
@@ -117,15 +489,23 @@
     opacity: 0.8;
   }
 
-  // 公式块上下留白
+  // 公式块上下留白（.katex 的字号不动：行内公式色带和公式块高亮都按它测量）
   .katex-display {
-    margin-block: 1.2em;
+    margin-block: 1.1em;
   }
 }
 
-// 浅色模式下位图加一层很淡的阴影
-html:not([data-theme="dark"]) [vp-content] img:not([src$=".svg"]) {
-  box-shadow: 0 2px 12px rgb(0 0 0 / 6%);
+// 浅色模式：单独成段的图片放在细线白底板上（替代原来的淡阴影）
+// 底板加在外层段落上，不碰 img：深色模式不加底板，§4 的反相、悬停看原图和 photoSwipe 都照旧
+// 不用 overflow: hidden，免得裁掉图片的放大效果
+html:not([data-theme="dark"]) [vp-content] p:has(> img:only-child) {
+  padding: 16px;
+  border: 1px solid var(--vp-c-divider);
+  background: #fff;
+
+  > img {
+    margin-block: 0 !important;
+  }
 }
 
 /* =========================================
@@ -217,11 +597,11 @@ html:not([data-theme="dark"]) {
 }
 
 /* =========================================
-   8. 首页文章卡片：圆角 + 悬停上浮
+   8. 文章卡片（分类 / 标签页）：2px 圆角 + 悬停上浮
    ========================================= */
 .vp-article-item {
   border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
+  border-radius: var(--r);
   box-shadow: 0 1px 4px rgb(0 0 0 / 5%);
   transition:
     transform 0.25s ease,
@@ -259,6 +639,573 @@ html:not([data-theme="dark"]) {
   }
 }
 
-[data-theme="dark"] .post-index-page .pi-card:hover {
-  box-shadow: 0 14px 36px -12px rgb(0 0 0 / 60%);
+// 深色模式：空心编号用较暗的描边，eyebrow 横线改灰，避免在深底上太亮
+[data-theme="dark"] .post-index-page {
+  .pi-index {
+    -webkit-text-stroke-color: var(--line-strong);
+  }
+
+  .pi-eyebrow-rule {
+    background: var(--vp-c-text-mute);
+  }
+}
+
+/* =========================================
+   10. 导航栏：64px 实底 + 1px 细线，链接紧跟站点名
+   ========================================= */
+// 保持主题的 fixed 定位，手机端自动隐藏和各处 var(--navbar-height) 偏移都照常可用
+.vp-navbar {
+  // 内容区最宽约 1392px，超出部分两侧留白
+  padding-inline: max(clamp(16px, 3vw, 32px), calc((100vw - 1392px) / 2));
+  background: var(--vp-c-bg);
+  box-shadow: 0 1px 0 var(--vp-c-divider);
+  backdrop-filter: none;
+}
+
+// 中间栏不放东西（链接移到了站点名后面），左栏占满剩余宽度
+.vp-navbar-start {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.vp-navbar-center,
+.vp-navbar-end {
+  flex: 0 0 auto;
+}
+
+@media (min-width: 720px) {
+  .vp-navbar-start > .vp-nav-links {
+    margin-inline-start: 20px !important;
+  }
+}
+
+/* ---------- 站点名 “Avalanche’s Blog” ---------- */
+.vp-brand .vp-site-name {
+  color: var(--ink);
+  font-family: var(--vp-font-brand);
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.005em;
+}
+
+.vp-brand:hover .vp-site-name {
+  color: var(--ink);
+}
+
+// 手机：字号小一点；宽度改为随左栏收缩，放不下时显示省略号
+@media (max-width: 719px) {
+  .vp-brand {
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .vp-brand .vp-site-name {
+    display: block;
+    overflow: hidden;
+    width: auto;
+    font-size: 21px;
+    text-overflow: ellipsis;
+  }
+}
+
+/* ---------- 导航链接：悬停 1px 墨色线，当前页 3px 主色线 ---------- */
+.vp-navbar .vp-nav-links {
+  gap: 4px;
+  font-size: 15px;
+}
+
+.vp-nav-links > .vp-nav-item {
+  display: flex;
+  margin: 0;
+  line-height: 1.5;
+
+  > .auto-link {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    color: var(--vp-c-text);
+    letter-spacing: 0.04em;
+
+    .vp-icon {
+      margin-inline-end: 0;
+    }
+
+    // 横线贴在导航栏底边：链接高 44px、垂直居中，所以向下偏移 (导航栏高 - 44px) / 2
+    &::before {
+      inset: auto 0 calc(22px - var(--navbar-height) / 2);
+      height: 1px;
+      border-radius: 0;
+      background: var(--ink);
+      transition: none;
+    }
+
+    &:hover {
+      color: var(--ink);
+
+      &::before {
+        inset: auto 0 calc(22px - var(--navbar-height) / 2);
+      }
+    }
+
+    &.route-link-active {
+      color: var(--ink);
+      font-weight: 700;
+
+      &::before {
+        inset: auto 0 calc(22px - var(--navbar-height) / 2);
+        height: 3px;
+        background: var(--vp-c-accent);
+      }
+    }
+  }
+}
+
+/* ---------- 图标按钮：GitHub、深浅色切换 ---------- */
+// 44px 方块 + 细边框；浅色悬停反转成墨色底，深色悬停只抬高一层底色
+.vp-navbar .vp-action-link,
+.vp-navbar .vp-color-mode-switch,
+.vp-nav-screen .vp-color-mode-switch {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  background: var(--vp-c-bg);
+  color: var(--ink);
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--vp-c-bg);
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+html[data-theme="dark"] {
+  .vp-navbar .vp-action-link,
+  .vp-navbar .vp-color-mode-switch,
+  .vp-nav-screen .vp-color-mode-switch {
+    &:hover {
+      border-color: var(--line-strong);
+      background: var(--vp-c-bg-elv);
+      color: var(--ink);
+    }
+  }
+}
+
+/* ---------- 搜索框：方框 + Ctrl K 提示 ---------- */
+// 只改触发按钮的外观；热键、搜索建议、弹窗和索引都由 slimsearch 负责，不动
+.vp-navbar .slimsearch-button {
+  box-sizing: border-box;
+  gap: 10px;
+  min-width: 168px;
+  height: 44px;
+  margin: 0;
+  padding: 0 8px 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-mute);
+  font-family: var(--vp-font);
+  font-size: 14px;
+  font-weight: 400;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    border-color: var(--ink);
+    background: var(--vp-c-bg);
+    color: var(--ink);
+  }
+
+  .search-icon {
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+
+  .slimsearch-placeholder {
+    flex: 1 1 auto;
+    margin: 0;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  // 两个按键合成一个带边框的 kbd
+  .slimsearch-key-hints {
+    display: inline-flex;
+    gap: 0.4em;
+    padding: 2px 6px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: var(--r);
+    color: var(--vp-c-text-mute);
+    font-family: var(--vp-font-mono);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .slimsearch-key {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: 0;
+  }
+
+  // slimsearch 在 ≤959px 本来就隐藏文字和按键提示，这里同步改成 44px 只有图标的方块
+  @media (max-width: 959px) {
+    justify-content: center;
+    width: 44px;
+    min-width: 44px;
+    padding: 0;
+
+    .slimsearch-placeholder,
+    .slimsearch-key-hints {
+      display: none;
+    }
+  }
+}
+
+// 搜索结果弹窗：悬停 / 选中项在主色底上改用 --vp-c-accent-text（深色沙金底配深色字）
+.slimsearch-result-item:hover,
+.slimsearch-result-item.active {
+  color: var(--vp-c-accent-text);
+
+  .slimsearch-result-type,
+  .slimsearch-remove-icon,
+  strong {
+    color: var(--vp-c-accent-text);
+  }
+}
+
+.vp-page.not-found .action-button {
+  border-radius: var(--r);
+  color: var(--vp-c-accent-text);
+}
+
+/* ---------- 手机端：保留主题的汉堡菜单，只换样式 ---------- */
+.vp-toggle-navbar-button {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  background: var(--vp-c-bg);
+
+  .vp-top,
+  .vp-middle,
+  .vp-bottom {
+    background: var(--ink);
+  }
+
+  &.is-active {
+    border-color: var(--ink);
+  }
+}
+
+.vp-nav-screen {
+  .nav-screen-links .navbar-links-item {
+    padding-block: 0;
+    border-bottom-color: var(--vp-c-divider);
+  }
+
+  .nav-screen-links .auto-link {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-height: 48px;
+    letter-spacing: 0.04em;
+
+    &:hover {
+      color: var(--ink);
+    }
+
+    // 当前页：墨色粗体 + 左侧 3px 主色线
+    &.route-link-active {
+      padding-inline-start: 12px;
+      color: var(--ink);
+      font-weight: 700;
+      box-shadow: inset 3px 0 0 var(--vp-c-accent);
+    }
+  }
+}
+
+/* =========================================
+   11. 通用按钮：直角实色主按钮 / 描边次按钮（mixin 在 _button.scss）
+   ========================================= */
+.ui-btn {
+  @include button.base;
+}
+
+.ui-btn-primary {
+  @include button.primary;
+}
+
+.ui-btn-ghost {
+  @include button.ghost;
+}
+
+/* =========================================
+   12. 标签 / 分类胶囊：中性描边款（全站唯一的胶囊形状）
+   ========================================= */
+// 主题按名字哈希给胶囊上彩色（.color0-8，深色下优先级到 0,3,0），这里统一用 !important 压成中性色
+.vp-tag,
+.vp-category,
+.page-tag-item,
+.page-category-item {
+  box-sizing: border-box;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: transparent !important;
+  color: var(--vp-c-text) !important;
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+  &:hover,
+  &.active {
+    border-color: var(--ink);
+    box-shadow: none;
+    color: var(--ink) !important;
+  }
+
+  &.active {
+    font-weight: 700;
+    transform: none;
+  }
+}
+
+// 标签前加一个灰色 #
+.vp-tag::before,
+.page-tag-item::before {
+  content: "#";
+  color: var(--vp-c-text-mute);
+}
+
+// 计数：等宽小字，去掉主题的主色圆角底
+.vp-tag .vp-tag-count,
+.vp-category .vp-category-count {
+  min-width: 0;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent !important;
+  color: var(--vp-c-text-mute) !important;
+  font-family: var(--vp-font-mono);
+  font-size: 11px;
+  line-height: inherit;
+}
+
+/* =========================================
+   13. 主题组件：分页、博客信息卡、侧卡（全站）
+   ========================================= */
+/* ---------- 分页：无框数字，悬停出细框，当前页下方 2px 主色线 ---------- */
+.vp-pagination {
+  font-weight: 400;
+}
+
+.vp-pagination-number {
+  gap: 4px;
+  overflow: visible;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+
+  div {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid transparent;
+    border-radius: var(--r);
+    background: transparent;
+    color: var(--vp-c-text-mute);
+    font-family: var(--vp-font-mono);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    // 主题的竖线分隔
+    &::before {
+      display: none;
+    }
+
+    &:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    &.active {
+      border-color: transparent;
+      background: transparent;
+      color: var(--ink);
+      font-weight: 500;
+      box-shadow: inset 0 -2px 0 var(--vp-c-accent);
+    }
+
+    // “上一页 / 下一页”用衬线字
+    &.prev,
+    &.next {
+      font-family: var(--vp-font);
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    &.ellipsis:hover {
+      border-color: transparent;
+      color: var(--vp-c-text-mute);
+    }
+  }
+}
+
+// 跳页输入框和“前往”按钮：2px 圆角 + 细线
+.vp-pagination-nav {
+  gap: 8px;
+  color: var(--vp-c-text-mute);
+  font-size: 14px;
+  font-weight: 400;
+
+  input {
+    box-sizing: border-box;
+    height: 36px;
+    margin: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r);
+    background: var(--vp-c-bg);
+    color: var(--ink);
+    font-family: var(--vp-font-mono);
+    font-size: 14px;
+
+    &:focus {
+      border-color: var(--vp-c-accent);
+    }
+  }
+}
+
+.vp-pagination-button {
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  background: var(--vp-c-bg);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    border-color 0.2s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+}
+
+/* ---------- 博客信息卡、博主卡：1px 细线方框，去掉阴影 ---------- */
+.vp-page .vp-blog-infos,
+.vp-page .vp-blog-info-wrapper .vp-blogger-info {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: var(--r);
+  background: transparent;
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+/* =========================================
+   14. 上一页 / 下一页：细线网格
+   ========================================= */
+// 每格四边都画 1px 线，再用 -1px 的外边距把相邻格子的线叠成一条；换行后自然拼成网格
+// 左右内边距和正文的版心 padding 一致，格子与正文文字对齐
+.vp-page-nav {
+  margin-top: 64px;
+  padding-block: 0;
+  padding-inline: 2.5rem;
+  border-top: 0;
+
+  @media (max-width: 959px) {
+    padding-inline: 1.5rem;
+  }
+
+  .auto-link {
+    box-sizing: border-box;
+    display: block;
+    flex: 1 1 260px;
+    margin: 0 -1px -1px 0;
+    padding: 18px 20px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 0;
+    color: var(--vp-c-text);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: var(--vp-c-bg-alt);
+      color: var(--vp-c-text);
+
+      .link {
+        color: var(--vp-c-accent);
+      }
+    }
+  }
+
+  // “上一页 / 下一页”标签
+  .hint {
+    color: var(--vp-c-text-mute);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+  }
+
+  .link {
+    margin-top: 2px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    transition: color 0.2s ease;
+  }
 }

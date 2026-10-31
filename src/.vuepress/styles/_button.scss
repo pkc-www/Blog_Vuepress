@@ -1,0 +1,71 @@
+// 通用按钮：直角实色主按钮 / 描边次按钮
+// index.scss 用它生成 .ui-btn 系列 class；其他样式文件可以 @use "./button" 后直接 @include
+
+$ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+// 基础形状：52px 高、2px 圆角、16px 粗体
+@mixin base {
+  box-sizing: border-box;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  height: 52px;
+  padding: 0 26px;
+  border: 1.5px solid transparent;
+  border-radius: var(--r, 2px);
+  box-shadow: none;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+
+  // 箭头：悬停时右移 3px
+  svg {
+    transition: transform 0.25s $ease-out;
+  }
+
+  // 浅色悬停：反转成墨色底
+  &:hover {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--vp-c-bg);
+    text-decoration: none;
+
+    svg {
+      transform: translateX(3px);
+    }
+  }
+
+  // 按下回弹
+  &:active {
+    transform: scale(0.97);
+  }
+
+  // 深色悬停：不用亮色块，改为抬高一层底色 + 边框变亮
+  [data-theme="dark"] &:hover {
+    border-color: var(--line-strong);
+    background: var(--vp-c-bg-elv);
+    color: var(--ink);
+  }
+}
+
+// 主按钮：主色底
+@mixin primary {
+  border-color: var(--vp-c-accent);
+  background: var(--vp-c-accent);
+  color: var(--vp-c-accent-text);
+}
+
+// 次按钮：页面底色 + 墨色描边
+@mixin ghost {
+  border-color: var(--rule);
+  background: var(--vp-c-bg);
+  color: var(--ink);
+}

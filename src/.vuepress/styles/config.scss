@@ -1,7 +1,7 @@
 // 主题配置变量（覆盖 vuepress-theme-hope 默认值）
 
-// 主色：墨蓝
-$theme-color: #2f5d8a;
+// 主色：墨蓝（用于 meta theme-color；实际的浅色 / 深色主色在 palette.scss 里逐个写死）
+$theme-color: #1f4a7a;
 
 // 代码块配色（与 theme.ts 中 shiki 的 one-light / one-dark-pro 对应）
 $code-color: (
@@ -10,5 +10,5 @@ $code-color: (
 );
 $code-bg-color: (
   light: #f6f7f9,
-  dark: #181b20,
+  dark: #18191c,
 );

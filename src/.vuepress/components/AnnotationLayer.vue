@@ -391,6 +391,14 @@ const onScroll = (): void => {
 let contentResize: ResizeObserver | null = null;
 let cardResize: ResizeObserver | null = null;
 
+// 正文的网页字体（KaTeX_Main）加载完后行高会变：重新量行内公式色带，再让旁注对齐
+// body 高度不一定变，ResizeObserver 不会触发，所以单独监听
+const onFontsLoaded = (): void => {
+  const root = contentRoot();
+  if (root) alignMathBands(root);
+  scheduleRelayout();
+};
+
 // 选中的批注：正文高亮涂满，对应卡片突出
 const markActive = (): void => {
   document
@@ -552,6 +560,8 @@ onMounted(async () => {
   window.addEventListener("resize", scheduleRelayout);
   window.addEventListener("rd-toc-resize", scheduleRelayout);
   window.addEventListener("scroll", onScroll, { passive: true });
+  void document.fonts?.ready.then(onFontsLoaded);
+  document.fonts?.addEventListener("loadingdone", onFontsLoaded);
   await initStore();
   mounted.value = true;
   document.addEventListener("selectionchange", onSelectionChange);
@@ -566,6 +576,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", scheduleRelayout);
   window.removeEventListener("rd-toc-resize", scheduleRelayout);
   window.removeEventListener("scroll", onScroll);
+  document.fonts?.removeEventListener("loadingdone", onFontsLoaded);
   document.documentElement.classList.remove("anno-margin");
   document.removeEventListener("selectionchange", onSelectionChange);
   document.removeEventListener("click", onDocClick);
