@@ -1,0 +1,344 @@
+[
+  {
+    "image": "74-polar-equations.png",
+    "lecture": 9,
+    "pdf_page": 3,
+    "printed_page": 3
+  },
+  {
+    "image": "75-scaled-correction.png",
+    "lecture": 9,
+    "pdf_page": 5,
+    "printed_page": 5
+  },
+  {
+    "image": "76-polar-jacobian-h.png",
+    "lecture": 9,
+    "pdf_page": 6,
+    "printed_page": 6
+  },
+  {
+    "image": "77-polar-jacobian-nml.png",
+    "lecture": 9,
+    "pdf_page": 7,
+    "printed_page": 7
+  },
+  {
+    "image": "78-pq-decoupling.png",
+    "lecture": 9,
+    "pdf_page": 10,
+    "printed_page": 10
+  },
+  {
+    "image": "79-diagonal-approximation.png",
+    "lecture": 9,
+    "pdf_page": 12,
+    "printed_page": 12
+  },
+  {
+    "image": "80-voltage-factorization.png",
+    "lecture": 9,
+    "pdf_page": 14,
+    "printed_page": 14
+  },
+  {
+    "image": "81-pq-constant-matrices.png",
+    "lecture": 9,
+    "pdf_page": 15,
+    "printed_page": 15
+  },
+  {
+    "image": "82-pq-iteration.png",
+    "lecture": 9,
+    "pdf_page": 17,
+    "printed_page": 17
+  },
+  {
+    "image": "83-two-bus-case.png",
+    "lecture": 9,
+    "pdf_page": 19,
+    "printed_page": 19
+  },
+  {
+    "image": "84-two-bus-y.png",
+    "lecture": 9,
+    "pdf_page": 20,
+    "printed_page": 20
+  },
+  {
+    "image": "85-two-bus-equations.png",
+    "lecture": 9,
+    "pdf_page": 21,
+    "printed_page": 21
+  },
+  {
+    "image": "86-two-bus-pv-conversion.png",
+    "lecture": 9,
+    "pdf_page": 22,
+    "printed_page": 22
+  },
+  {
+    "image": "87-four-bus-first-iteration.png",
+    "lecture": 9,
+    "pdf_page": 25,
+    "printed_page": 25
+  },
+  {
+    "image": "88-four-bus-converged.png",
+    "lecture": 9,
+    "pdf_page": 29,
+    "printed_page": 29
+  },
+  {
+    "image": "89-voltage-deviation-course-table.png",
+    "lecture": 10,
+    "pdf_page": 6,
+    "printed_page": 6
+  },
+  {
+    "image": "90-qu-characteristic.png",
+    "lecture": 10,
+    "pdf_page": 9,
+    "printed_page": 9
+  },
+  {
+    "image": "91-qu-balance.png",
+    "lecture": 10,
+    "pdf_page": 10,
+    "printed_page": 10
+  },
+  {
+    "image": "92-local-reactive-balance.png",
+    "lecture": 10,
+    "pdf_page": 13,
+    "printed_page": 13
+  },
+  {
+    "image": "93-generator-pq-capability.png",
+    "lecture": 10,
+    "pdf_page": 14,
+    "printed_page": 14
+  },
+  {
+    "image": "94-synchronous-machine-states.png",
+    "lecture": 10,
+    "pdf_page": 16,
+    "printed_page": 16
+  },
+  {
+    "image": "95-shunt-capacitor.png",
+    "lecture": 10,
+    "pdf_page": 19,
+    "printed_page": 19
+  },
+  {
+    "image": "96-svc-structure.png",
+    "lecture": 10,
+    "pdf_page": 21,
+    "printed_page": 21
+  },
+  {
+    "image": "97-line-charging-reactive-power.png",
+    "lecture": 10,
+    "pdf_page": 24,
+    "printed_page": 24
+  },
+  {
+    "image": "98-pilot-node-relation.png",
+    "lecture": 10,
+    "pdf_page": 27,
+    "printed_page": 27
+  },
+  {
+    "image": "99-pilot-voltage-strategies.png",
+    "lecture": 10,
+    "pdf_page": 29,
+    "printed_page": 29
+  },
+  {
+    "image": "100-avc-pilot-case.png",
+    "lecture": 10,
+    "pdf_page": 32,
+    "printed_page": 32
+  },
+  {
+    "image": "101-voltage-regulation-principle.png",
+    "lecture": 10,
+    "pdf_page": 34,
+    "printed_page": 34
+  },
+  {
+    "image": "102-tap-changer.png",
+    "lecture": 10,
+    "pdf_page": 37,
+    "printed_page": 37
+  },
+  {
+    "image": "103-regulating-transformer.png",
+    "lecture": 10,
+    "pdf_page": 39,
+    "printed_page": 39
+  },
+  {
+    "image": "104-series-shunt-comparison.png",
+    "lecture": 10,
+    "pdf_page": 41,
+    "printed_page": 41
+  },
+  {
+    "image": "105-frequency-power-balance.png",
+    "lecture": 11,
+    "pdf_page": 6,
+    "printed_page": 6
+  },
+  {
+    "image": "106-load-frequency-characteristic.png",
+    "lecture": 11,
+    "pdf_page": 9,
+    "printed_page": 9
+  },
+  {
+    "image": "107-hydraulic-governor.png",
+    "lecture": 11,
+    "pdf_page": 11,
+    "printed_page": 11
+  },
+  {
+    "image": "108-primary-steady-state.png",
+    "lecture": 11,
+    "pdf_page": 13,
+    "printed_page": 13
+  },
+  {
+    "image": "109-secondary-steady-state.png",
+    "lecture": 11,
+    "pdf_page": 15,
+    "printed_page": 15
+  },
+  {
+    "image": "110-primary-balance-geometry.png",
+    "lecture": 11,
+    "pdf_page": 17,
+    "printed_page": 17
+  },
+  {
+    "image": "111-secondary-balance-geometry.png",
+    "lecture": 11,
+    "pdf_page": 19,
+    "printed_page": 19
+  },
+  {
+    "image": "112-three-frequency-controls.png",
+    "lecture": 11,
+    "pdf_page": 23,
+    "printed_page": 23
+  },
+  {
+    "image": "113-generator-frequency-coefficient.png",
+    "lecture": 11,
+    "pdf_page": 25,
+    "printed_page": 25
+  },
+  {
+    "image": "114-aggregate-droop.png",
+    "lecture": 11,
+    "pdf_page": 26,
+    "printed_page": 26
+  },
+  {
+    "image": "115-system-frequency-coefficient.png",
+    "lecture": 11,
+    "pdf_page": 27,
+    "printed_page": 27
+  },
+  {
+    "image": "116-low-inertia.png",
+    "lecture": 11,
+    "pdf_page": 29,
+    "printed_page": 29
+  },
+  {
+    "image": "117-agc-architecture.png",
+    "lecture": 11,
+    "pdf_page": 30,
+    "printed_page": 30
+  },
+  {
+    "image": "118-seasonal-load-allocation.png",
+    "lecture": 12,
+    "pdf_page": 10,
+    "printed_page": 10
+  },
+  {
+    "image": "119-incremental-cost.png",
+    "lecture": 12,
+    "pdf_page": 12,
+    "printed_page": 12
+  },
+  {
+    "image": "120-quadratic-cost.png",
+    "lecture": 12,
+    "pdf_page": 13,
+    "printed_page": 13
+  },
+  {
+    "image": "121-economic-dispatch-model.png",
+    "lecture": 12,
+    "pdf_page": 14,
+    "printed_page": 14
+  },
+  {
+    "image": "122-dispatch-and-power-flow.png",
+    "lecture": 12,
+    "pdf_page": 16,
+    "printed_page": 16
+  },
+  {
+    "image": "123-equal-ic-derivation.png",
+    "lecture": 12,
+    "pdf_page": 18,
+    "printed_page": 18
+  },
+  {
+    "image": "124-equal-ic-exchange-proof.png",
+    "lecture": 12,
+    "pdf_page": 20,
+    "printed_page": 20
+  },
+  {
+    "image": "125-two-generator-ed.png",
+    "lecture": 12,
+    "pdf_page": 21,
+    "printed_page": 21
+  },
+  {
+    "image": "126-ed-bounds.png",
+    "lecture": 12,
+    "pdf_page": 23,
+    "printed_page": 23
+  },
+  {
+    "image": "127-ed-bound-sequence.png",
+    "lecture": 12,
+    "pdf_page": 24,
+    "printed_page": 24
+  },
+  {
+    "image": "128-loss-penalty-factor.png",
+    "lecture": 12,
+    "pdf_page": 27,
+    "printed_page": 27
+  },
+  {
+    "image": "129-loss-ed-case.png",
+    "lecture": 12,
+    "pdf_page": 28,
+    "printed_page": 28
+  },
+  {
+    "image": "130-loss-ed-original-result.png",
+    "lecture": 12,
+    "pdf_page": 29,
+    "printed_page": 29
+  }
+]
