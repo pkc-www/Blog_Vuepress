@@ -278,6 +278,12 @@ This is the same ratio as the buck-boost (also inverted).
 > | Buck-Boost | $-\dfrac{D}{1-D}$ | $\dfrac{V_d D}{f_s L}$ | $\dfrac{I_o D}{f_s C}$ |
 > | Ćuk | $-\dfrac{D}{1-D}$ | — | — |
 
+### Interactive Lab: Buck / Boost / Buck-Boost (CCM ↔ DCM)
+
+Switch among the three non-isolated topologies and adjust duty ratio $D$, load resistance $R$, and inductance $L$: verify **volt-second balance** on $v_L(t)$ (equal positive and negative areas), observe the transition from CCM to **DCM** once $i_L(t)$ hits zero ($I_o < I_{oB}$), and see how light-load DCM pushes the Boost / Buck-Boost voltage gain well above the ideal CCM curve.
+
+<PeDcDcLab />
+
 ## 5. Full-bridge Regulator
 
 ![Full-bridge converter with a DC-motor load, and its four quadrants](./图片/ch4-full-bridge.png)
@@ -325,3 +331,9 @@ The two legs are controlled separately: leg A compares $v_{control}$ with $v_{tr
 - The average $V_o = \dfrac{V_d}{\hat{V}_{tri}}\, v_{control}$ is the same as for bipolar switching;
 > [!TIP]
 > With unipolar switching the voltage steps are only $V_d$ instead of $2V_d$, and the effective switching frequency of $v_o$ is **doubled**, so the output ripple is much smaller for the same device switching frequency.
+
+### Interactive Lab: Bipolar vs. Unipolar PWM
+
+Vary the modulation index $m = v_{control}/\hat{V}_{tri}$ to compare bipolar and unipolar PWM side by side at identical average output $V_o = m V_d$: verify that unipolar switching halves the voltage step, doubles the effective ripple frequency, and drives current ripple to zero at $m = 0$ (where bipolar ripple peaks).
+
+<PePwmBridgeLab />

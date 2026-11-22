@@ -2,8 +2,23 @@ import { defineClientConfig } from "vuepress/client";
 
 import AnnotationLayer from "./components/AnnotationLayer.vue";
 import AnnotationReview from "./components/AnnotationReview.vue";
+import ControlBodeNyquistLab from "./components/ControlBodeNyquistLab.vue";
+import ControlRootLocusLab from "./components/ControlRootLocusLab.vue";
+import ControlSecondOrderLab from "./components/ControlSecondOrderLab.vue";
+import EmInductionMotorLab from "./components/EmInductionMotorLab.vue";
+import EmRotatingFieldLab from "./components/EmRotatingFieldLab.vue";
+import EmSyncMachineLab from "./components/EmSyncMachineLab.vue";
+import EmTransformerLab from "./components/EmTransformerLab.vue";
 import PageLead from "./components/PageLead.vue";
+import PeDcDcLab from "./components/PeDcDcLab.vue";
+import PePwmBridgeLab from "./components/PePwmBridgeLab.vue";
+import PeRectifierLab from "./components/PeRectifierLab.vue";
 import PostIndex from "./components/PostIndex.vue";
+import PsEconomicDispatchLab from "./components/PsEconomicDispatchLab.vue";
+import PsFrequencyControlLab from "./components/PsFrequencyControlLab.vue";
+import PsPowerFlowLab from "./components/PsPowerFlowLab.vue";
+import PsVoltageDropLab from "./components/PsVoltageDropLab.vue";
+import PsVoltageReactiveLab from "./components/PsVoltageReactiveLab.vue";
 import ReadingControls from "./components/ReadingControls.vue";
 import HomeBlog from "./layouts/HomeBlog.vue";
 import { initMotion, onRouteChange } from "./motion.js";
@@ -36,6 +51,25 @@ export default defineClientConfig({
     app.component("PostIndex", PostIndex);
     // 批注复习页（src/review/README.md）
     app.component("AnnotationReview", AnnotationReview);
+    // 自动控制原理交互实验组件
+    app.component("ControlSecondOrderLab", ControlSecondOrderLab);
+    app.component("ControlRootLocusLab", ControlRootLocusLab);
+    app.component("ControlBodeNyquistLab", ControlBodeNyquistLab);
+    // 电力电子基础交互实验组件
+    app.component("PeRectifierLab", PeRectifierLab);
+    app.component("PeDcDcLab", PeDcDcLab);
+    app.component("PePwmBridgeLab", PePwmBridgeLab);
+    // 电力系统分析交互实验组件
+    app.component("PsVoltageDropLab", PsVoltageDropLab);
+    app.component("PsPowerFlowLab", PsPowerFlowLab);
+    app.component("PsVoltageReactiveLab", PsVoltageReactiveLab);
+    app.component("PsFrequencyControlLab", PsFrequencyControlLab);
+    app.component("PsEconomicDispatchLab", PsEconomicDispatchLab);
+    // 电机学交互实验组件
+    app.component("EmTransformerLab", EmTransformerLab);
+    app.component("EmRotatingFieldLab", EmRotatingFieldLab);
+    app.component("EmSyncMachineLab", EmSyncMachineLab);
+    app.component("EmInductionMotorLab", EmInductionMotorLab);
 
     if (__VUEPRESS_SSR__) return;
 
