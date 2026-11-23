@@ -169,6 +169,19 @@
       "id": "mwso2j5uwy19",
       "created": 1795402126722,
       "updated": 1795402126722
+    },
+    {
+      "quote": "串联阻抗：RT∗​=SN​ΔPS​​，XT∗​=100US​%​",
+      "prefix": "基准，再参与同一电路计算。以变压器自身 SN​,UN​ 为基准：",
+      "suffix": "。励磁导纳：GT∗​=SN​ΔP0​​，BT∗​=100I0​%",
+      "pos": 1395,
+      "page": "/post/电力系统分析/第5讲-标幺制与多电压等级等值电路.html",
+      "pageTitle": "第5讲 标幺制与多电压等级等值电路",
+      "color": "yellow",
+      "note": "",
+      "id": "mwso8aqbqcst",
+      "created": 1795402395731,
+      "updated": 1795402395731
     }
   ],
   "deleted": [
