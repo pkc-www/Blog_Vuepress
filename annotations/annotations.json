@@ -182,6 +182,19 @@
       "id": "mwso8aqbqcst",
       "created": 1795402395731,
       "updated": 1795402395731
+    },
+    {
+      "quote": "励磁导纳：GT∗​=SN​ΔP0​​，BT∗​=100I0​%​；因励磁支路是感性导纳，实际复导纳写作 YT∗​=GT∗​−jBT",
+      "prefix": "联阻抗：RT∗​=SN​ΔPS​​，XT∗​=100US​%​。",
+      "suffix": "∗​。说明：ΔPS​,ΔP0​,SN​ 必须用一致功率单位；US",
+      "pos": 1428,
+      "page": "/post/电力系统分析/第5讲-标幺制与多电压等级等值电路.html",
+      "pageTitle": "第5讲 标幺制与多电压等级等值电路",
+      "color": "yellow",
+      "note": "",
+      "id": "mwso8eeyetg3",
+      "created": 1795402400506,
+      "updated": 1795402400506
     }
   ],
   "deleted": [
