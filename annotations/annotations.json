@@ -208,6 +208,19 @@
       "id": "mwu2fjv7ui19",
       "created": 1795486714963,
       "updated": 1795486714963
+    },
+    {
+      "quote": "The P body and N− drift region form an intrinsic body diode, so a MOSFET can always conduct reverse current. Bridge circuits often use it as the freewheeling diode.",
+      "prefix": ".Carrier: electron (unipolar).提示",
+      "suffix": "There is no conductivity modulat",
+      "pos": 5888,
+      "page": "/post/电力电子基础/第1章-功率器件.html",
+      "pageTitle": "第1章 功率器件 Power Devices",
+      "color": "yellow",
+      "note": "",
+      "id": "mwu2gbkmhhsz",
+      "created": 1795486750870,
+      "updated": 1795486750870
     }
   ],
   "deleted": [
