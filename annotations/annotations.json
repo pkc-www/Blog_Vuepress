@@ -247,6 +247,19 @@
       "id": "mwviyce4s84z",
       "created": 1795574931772,
       "updated": 1795574931772
+    },
+    {
+      "quote": "节点复电压和支路复功率的分布",
+      "prefix": "流方程是非线性方程，需要数值方法和专门算法。结果不只是电流，而是",
+      "suffix": "。English: Boundary conditions us",
+      "pos": 682,
+      "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
+      "pageTitle": "第6讲 简单电力系统潮流计算",
+      "color": "yellow",
+      "note": "",
+      "id": "mwvrja2vrj1o",
+      "created": 1795589345479,
+      "updated": 1795589345479
     }
   ],
   "deleted": [
