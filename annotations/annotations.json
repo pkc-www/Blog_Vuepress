@@ -256,10 +256,10 @@
       "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
       "pageTitle": "第6讲 简单电力系统潮流计算",
       "color": "yellow",
-      "note": "",
+      "note": "每个节点由 2 个复数（4 个实数） 完整刻画:\n复电压: $\\dot{U}_i = U_i \\angle \\delta_i$（幅值 + 相角）\n复功率: $\\dot{S}_i = P_i + jQ_i$（有功 + 无功）",
       "id": "mwvrja2vrj1o",
       "created": 1795589345479,
-      "updated": 1795589345479
+      "updated": 1795589350118
     }
   ],
   "deleted": [
