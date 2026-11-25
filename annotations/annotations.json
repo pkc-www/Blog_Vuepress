@@ -221,6 +221,19 @@
       "id": "mwu2gbkmhhsz",
       "created": 1795486750870,
       "updated": 1795486750870
+    },
+    {
+      "quote": "全网取同一 SB​，各电压等级分别取 UB​；元件先按本侧基准标幺化。",
+      "prefix": "bersome for multilevel networks.",
+      "suffix": "理想变压器标幺变比为K∗​=KUB1​UB2​​。若取 UB1​",
+      "pos": 2060,
+      "page": "/post/电力系统分析/第5讲-标幺制与多电压等级等值电路.html",
+      "pageTitle": "第5讲 标幺制与多电压等级等值电路",
+      "color": "yellow",
+      "note": "",
+      "id": "mwvh3tamheei",
+      "created": 1795571827726,
+      "updated": 1795571827726
     }
   ],
   "deleted": [
