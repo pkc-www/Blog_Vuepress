@@ -9,10 +9,10 @@
       "page": "/post/电力系统分析/第6讲-简单电力系统潮流计算.html",
       "pageTitle": "第6讲 简单电力系统潮流计算",
       "color": "yellow",
-      "note": "边界条件不是“电流”，而是“功率”",
+      "note": "边界条件不是“电流”，而是“功率”.\n每个节点确实就由 2 个复数（4 个实数） 完整刻画：\n\n复电压 \n𝑈\n˙\n𝑖\n=\n𝑈\n𝑖\n∠\n𝛿\n𝑖\nU\n˙\ni\n\t​\n\n=U\ni\n\t​\n\n∠δ\ni\n\t​\n\n（幅值 + 相角）\n复功率 \n𝑆\n˙\n𝑖\n=\n𝑃\n𝑖\n+\n𝑗\n𝑄\n𝑖\nS\n˙\ni\n\t​\n\n=P\ni\n\t​\n\n+jQ\ni\n\t​\n\n（有功 + 无功）",
       "id": "mvonu0fdsqba",
       "created": 1792983082153,
-      "updated": 1795588897074
+      "updated": 1795589101791
     },
     {
       "quote": "ΔU˙2​=U˙1​−U˙2​=U2​P2​R+Q2​X​+jU2​P2​X−Q2​R​",
